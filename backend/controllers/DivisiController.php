@@ -97,12 +97,44 @@ class DivisiController
     }
 
     public function destroy($id)
-    {
-        $this->model->delete($id);
+{
+    $result = $this->model->delete($id);
+
+
+    if(!$result){
 
         echo json_encode([
-            "status"  => true,
-            "message" => "Data divisi berhasil dihapus"
+            "status" => false,
+            "message" => "Divisi tidak bisa dihapus karena masih digunakan oleh pegawai"
         ]);
+
+        return;
     }
+
+
+    echo json_encode([
+        "status" => true,
+        "message" => "Data divisi berhasil dihapus"
+    ]);
+}
+
+
+    public function storeWeb()
+    {
+        $namaDivisi = trim($_POST['nama_divisi'] ?? '');
+
+        if (empty($namaDivisi)) {
+            $_SESSION['error'] = "Nama divisi wajib diisi.";
+            header("Location: index.php?page=tambah_divisi");
+            exit;
+        }
+
+        $this->model->create($namaDivisi);
+
+        $_SESSION['success'] = "Data divisi berhasil ditambahkan.";
+
+        header("Location: index.php?page=divisi");
+        exit;
+    }
+
 }

@@ -21,9 +21,9 @@ class DashboardController
 
         echo json_encode([
 
-            "status" => true,
+            "status"=>true,
 
-            "data" => [
+            "data"=>[
 
                 "pegawai" =>
                 $this->model->totalPegawai(),

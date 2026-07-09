@@ -1,6 +1,6 @@
 <?php
 
-require_once __DIR__ . '/../config/Database.php';
+require_once __DIR__ . '/../config/koneksi.php';
 
 class CutiModel
 {
@@ -97,4 +97,26 @@ class CutiModel
 
         return $stmt->get_result();
     }
+
+   public function updateStatus($id, $status)
+{
+    $sql = "
+        UPDATE cuti
+        SET status = ?
+        WHERE id = ?
+    ";
+
+
+    $stmt = $this->conn->prepare($sql);
+
+    $stmt->bind_param(
+        "si",
+        $status,
+        $id
+    );
+
+
+    return $stmt->execute();
+}
+
 }

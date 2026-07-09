@@ -1,0 +1,77 @@
+<?php
+
+require_once __DIR__ . "/../config/koneksi.php";
+
+class JabatanModel
+{
+    private $conn;
+
+    public function __construct()
+    {
+        $database = new Database();
+        $this->conn = $database->conn;
+    }
+
+    public function getAll()
+{
+    $sql = "
+        SELECT 
+            jabatan.*,
+            COUNT(pegawai.id) AS jumlah_pegawai
+
+        FROM jabatan
+
+        LEFT JOIN pegawai
+        ON jabatan.id = pegawai.id_jabatan
+
+        GROUP BY jabatan.id
+
+        ORDER BY jabatan.id DESC
+    ";
+
+    return $this->conn->query($sql);
+}
+
+    public function getById($id)
+    {
+        $sql = "SELECT * FROM jabatan WHERE id = ?";
+
+        $stmt = $this->conn->prepare($sql);
+        $stmt->bind_param("i", $id);
+        $stmt->execute();
+
+        return $stmt->get_result()->fetch_assoc();
+    }
+
+    public function create($namaJabatan, $gajiPokok)
+    {
+        $sql = "INSERT INTO jabatan (nama_jabatan, gaji_pokok) VALUES (?, ?)";
+
+        $stmt = $this->conn->prepare($sql);
+        $stmt->bind_param("sd", $namaJabatan, $gajiPokok);
+
+        return $stmt->execute();
+    }
+
+    public function update($id, $namaJabatan, $gajiPokok)
+    {
+        $sql = "UPDATE jabatan
+                SET nama_jabatan = ?,
+                    gaji_pokok = ?
+                WHERE id = ?";
+
+        $stmt = $this->conn->prepare($sql);
+        $stmt->bind_param("sdi", $namaJabatan, $gajiPokok, $id);
+
+        return $stmt->execute();
+    }
+
+    public function delete($id)
+    {
+        $sql = "DELETE FROM jabatan WHERE id = ?";
+        $stmt = $this->conn->prepare($sql);
+        $stmt->bind_param("i", $id);
+
+        return $stmt->execute();
+    }
+}

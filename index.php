@@ -2,32 +2,162 @@
 
 session_start();
 
-require_once 'koneksi.php';
-require_once 'AuthModel.php';
-require_once 'AuthController.php';
-require_once 'AuthMiddleware.php';
+require_once __DIR__ . '/backend/config/koneksi.php';
+require_once __DIR__ . '/backend/models/AuthModel.php';
+require_once __DIR__ . '/backend/controllers/AuthController.php';
+require_once __DIR__ . '/backend/middleware/AuthMiddleware.php';
+require_once __DIR__ . '/backend/controllers/DivisiController.php';
 
-$authModel = new AuthModel($koneksi);
-$authController = new AuthController($authModel);
+$authController = new AuthController();
+$divisiController = new DivisiController();
 
-$page = $_GET['page'] ?? 'login';
+$page = $_GET['page'] ?? 'home';
 
 switch ($page) {
 
-    case 'login':
-        $authController->indexLogin();
+    case 'home':
+        $title = "Home";
+        $content = __DIR__ . '/frontend/home.php';
+        require __DIR__ . '/frontend/layout/template.php';
         break;
 
-    case 'dashboard_admin':
-        AuthMiddleware::checkLogin();
-        AuthMiddleware::checkAdmin();
-        require_once 'views/dashboard/admin.php';
+    case 'about':
+        $title = "About";
+        $content = __DIR__ . '/frontend/about.php';
+        require __DIR__ . '/frontend/layout/template.php';
         break;
 
-    case 'dashboard_pegawai':
-        AuthMiddleware::checkLogin();
+    case 'contact':
+        $title = "Contact";
+        $content = __DIR__ . '/frontend/contact.php';
+        require __DIR__ . '/frontend/layout/template.php';
+        break;
 
-        require_once 'views/dashboard/pegawai.php';
+
+    case 'dashboard':
+        $title = "Dashboard";
+        $content = __DIR__ . '/frontend/dashboard/pages/dashboard.php';
+        require __DIR__ . '/frontend/dashboard/dashboard_template.php';
+        break;
+
+    case 'pegawai':
+        $title = "Pegawai";
+        $content = __DIR__ . '/frontend/dashboard/pages/pegawai.php';
+        require __DIR__ . '/frontend/dashboard/dashboard_template.php';
+        break;
+
+    case 'tambah_pegawai':
+        $title = "Tambah Pegawai";
+        $content = __DIR__ . '/frontend/dashboard/pages/tambah_pegawai.php';
+        require __DIR__ . '/frontend/dashboard/dashboard_template.php';
+        break;
+
+    case 'divisi':
+        $title = "Divisi";
+        $content = __DIR__ . '/frontend/dashboard/pages/divisi.php';
+        require __DIR__ . '/frontend/dashboard/dashboard_template.php';
+        break;
+
+    case 'tambah_divisi':
+        $title = "Tambah Divisi";
+        $content = __DIR__ . '/frontend/dashboard/pages/tambah_divisi.php';
+        require __DIR__ . '/frontend/dashboard/dashboard_template.php';
+        break;
+
+    case 'simpan_divisi':
+        $divisiController = new DivisiController();
+        $divisiController->storeWeb();
+        break;
+
+    case "edit_divisi":
+        $title = "Edit Divisi";
+        $content = __DIR__ . "/frontend/dashboard/pages/edit_divisi.php";
+        require __DIR__ . "/frontend/dashboard/dashboard_template.php";
+        break;
+
+    case "hapus_divisi":
+        require_once __DIR__ . "/backend/controllers/DivisiController.php";
+        $controller = new DivisiController();
+        $controller->destroy($_GET['id']);
+        header("Location: index.php?page=divisi");
+        exit;
+        break;
+
+    case 'jabatan':
+        $title = "Jabatan";
+        $content = __DIR__ . '/frontend/dashboard/pages/jabatan.php';
+        require __DIR__ . '/frontend/dashboard/dashboard_template.php';
+        break;
+
+    case 'absensi':
+        $title = "Absensi";
+        $content = __DIR__ . '/frontend/dashboard/pages/absensi.php';
+        require __DIR__ . '/frontend/dashboard/dashboard_template.php';
+        break;
+
+    case 'absensi-create':
+        $title = "Tambah Absensi";
+        $content = __DIR__ . '/frontend/dashboard/pages/absensi_create.php';
+        require __DIR__ . '/frontend/dashboard/dashboard_template.php';
+        break;
+
+    case 'cuti':
+        $title = "Cuti";
+        $content = __DIR__ . '/frontend/dashboard/pages/cuti.php';
+        require __DIR__ . '/frontend/dashboard/dashboard_template.php';
+        break;
+
+    case 'user':
+        $title = "User";
+        $content = __DIR__ . '/frontend/dashboard/pages/user.php';
+        require __DIR__ . '/frontend/dashboard/dashboard_template.php';
+        break;
+
+    case "edit_user":
+        $title = "Edit User";
+        $content = __DIR__ . "/frontend/dashboard/pages/edit_user.php";
+        require __DIR__ . "/frontend/dashboard/dashboard_template.php";
+        break;
+
+    case 'proses_edit_user':
+        require_once __DIR__ . '/backend/controllers/UserController.php';
+        $controller = new UserController();
+        $controller->prosesEdit();
+        break;
+
+    case "hapus_user":
+        require_once __DIR__ . "/backend/controllers/UserController.php";
+        $controller = new UserController();
+        $controller->prosesHapus();
+        break;
+
+    case "tambah_user":
+        $title = "Tambah User";
+        $content = __DIR__ . "/frontend/dashboard/pages/tambah_user.php";
+        require __DIR__ . "/frontend/dashboard/dashboard_template.php";
+        break;
+
+    case "proses_tambah_user":
+        require_once __DIR__ . "/backend/controllers/UserController.php";
+        $controller = new UserController();
+        $controller->prosesTambah();
+        break;
+
+    case "login":
+        $title = "Login";
+        $content = __DIR__ . "/frontend/login.php";
+        require __DIR__ . "/frontend/layout/template.php";
+        break;
+
+    case "proses_login":
+        $authController->login();
+        break;
+
+    case 'dashboard':
+        AuthMiddleware::checkLogin();
+        $title = "Dashboard";
+        $content = __DIR__ . '/frontend/dashboard/dashboard.php';
+        require __DIR__ . '/frontend/dashboard/dashboard_template.php';
         break;
 
     case 'logout':
@@ -35,6 +165,9 @@ switch ($page) {
         break;
 
     default:
-        echo "404 - Page Not Found";
+        http_response_code(404);
+        $title = "404";
+        $content = __DIR__ . '/frontend/dashboard/404.php';
+        require __DIR__ . '/frontend/layout/template.php';
         break;
 }

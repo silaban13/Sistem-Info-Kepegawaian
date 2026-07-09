@@ -11,6 +11,8 @@ class CutiController
         $this->model = new CutiModel();
     }
 
+
+    // GET semua cuti
     public function index()
     {
         $result = $this->model->getAll();
@@ -27,18 +29,144 @@ class CutiController
         ]);
     }
 
+
+    // POST tambah cuti
     public function store()
     {
-        // nanti tambah cuti
+        $input = json_decode(file_get_contents("php://input"), true);
+
+        $id_pegawai = $input['id_pegawai'];
+        $tanggal_mulai = $input['tanggal_mulai'];
+        $tanggal_selesai = $input['tanggal_selesai'];
+        $alasan = $input['alasan'];
+        $status = $input['status'] ?? "Pending";
+
+
+        $result = $this->model->create(
+            $id_pegawai,
+            $tanggal_mulai,
+            $tanggal_selesai,
+            $alasan,
+            $status
+        );
+
+
+        echo json_encode([
+            "status" => $result,
+            "message" => $result 
+                ? "Cuti berhasil ditambahkan"
+                : "Gagal menambahkan cuti"
+        ]);
     }
 
+    
+
+
+
+    // PUT update cuti
     public function update()
     {
-        // nanti update cuti
+        $input = json_decode(file_get_contents("php://input"), true);
+
+
+        $id = $input['id'];
+        $tanggal_mulai = $input['tanggal_mulai'];
+        $tanggal_selesai = $input['tanggal_selesai'];
+        $alasan = $input['alasan'];
+        $status = $input['status'];
+
+
+        $result = $this->model->update(
+            $id,
+            $tanggal_mulai,
+            $tanggal_selesai,
+            $alasan,
+            $status
+        );
+
+
+        echo json_encode([
+            "status" => $result,
+            "message" => $result
+                ? "Cuti berhasil diupdate"
+                : "Gagal update cuti"
+        ]);
     }
 
+
+
+    // DELETE hapus cuti
     public function destroy()
     {
-        // nanti hapus cuti
+        $input = json_decode(file_get_contents("php://input"), true);
+
+        $id = $input['id'];
+
+
+        $result = $this->model->delete($id);
+
+
+        echo json_encode([
+            "status" => $result,
+            "message" => $result
+                ? "Cuti berhasil dihapus"
+                : "Gagal menghapus cuti"
+        ]);
     }
+
+
+    // GET cuti berdasarkan pegawai
+    public function pegawai($id_pegawai)
+    {
+        $result = $this->model->getByPegawai($id_pegawai);
+
+
+        $data = [];
+
+        while ($row = $result->fetch_assoc()) {
+            $data[] = $row;
+        }
+
+
+        echo json_encode([
+            "status" => true,
+            "data" => $data
+        ]);
+    }
+
+   
+    // UPDATE STATUS CUTI (approve/reject)
+public function updateStatus()
+{
+    $input = json_decode(file_get_contents("php://input"), true);
+
+    $id = $input['id'];
+    $status = $input['status'];
+
+
+    if (!in_array($status, ["Disetujui", "Ditolak"])) {
+
+        http_response_code(400);
+
+        echo json_encode([
+            "status" => false,
+            "message" => "Status tidak valid"
+        ]);
+
+        return;
+    }
+
+
+    $result = $this->model->updateStatus($id, $status);
+
+
+    echo json_encode([
+        "status" => $result,
+        "message" => $result
+            ? "Status cuti berhasil diperbarui"
+            : "Gagal memperbarui status"
+    ]);
+}
+
+
 }

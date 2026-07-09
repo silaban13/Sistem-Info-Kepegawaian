@@ -1,0 +1,193 @@
+<div class="space-y-6">
+    <div>
+        <h1 class="text-3xl font-bold text-gray-800"> Data Jabatan </h1>
+        <p class="mt-2 text-gray-600">
+            Kelola informasi jabatan pegawai yang digunakan dalam sistem kepegawaian.
+            Data jabatan membantu menentukan posisi dan tanggung jawab setiap pegawai.
+        </p>
+    </div>
+    <div class="flex justify-between items-center">
+        <h2 class="text-xl font-semibold text-gray-700"> Daftar Jabatan </h2>
+        <button id="btnTambahJabatan" class="bg-blue-600 text-white px-5 py-2 rounded-lg hover:bg-blue-700">
+            + Tambah Jabatan
+        </button>
+    </div>
+    <div id="modalJabatan" class="hidden fixed inset-0 bg-black bg-opacity-40 flex items-center justify-center">
+        <div class="bg-white rounded-xl p-6 w-full max-w-md">
+            <h2 class="text-xl font-bold mb-4"> Edit Jabatan </h2>
+            <form id="formEditJabatan">
+                <input type="hidden" id="edit_id">
+                <label class="block mb-2"> Nama Jabatan </label>
+                <input id="edit_nama_jabatan" class="w-full border p-2 rounded mb-4" required>
+                <label class="block mb-2"> Gaji Pokok </label>
+                <input type="number" id="edit_gaji_pokok" class="w-full border p-2 rounded mb-4" required>
+                <div class="flex justify-end gap-3">
+                    <button type="button" id="closeEdit" class="bg-gray-300 px-4 py-2 rounded"> Batal </button>
+                    <button type="submit" class="bg-blue-600 text-white px-4 py-2 rounded"> Update </button>
+                </div>
+            </form>
+        </div>
+    </div>
+    <div class="bg-white rounded-xl shadow overflow-hidden">
+        <table class="w-full text-left">
+            <thead class="bg-gray-100">
+                <tr>
+                    <th class="px-6 py-3 text-gray-600">No</th>
+                    <th class="px-6 py-3 text-gray-600">Nama Jabatan</th>
+                        <th class="px-6 py-3 text-gray-600">Gaji Pokok</th>
+                    <th class="px-6 py-3 text-gray-600">Jumlah Pegawai</th>
+                    <th class="px-6 py-3 text-gray-600">Aksi</th>
+                </tr>
+            </thead>
+            <tbody id="jabatanTable">
+                <tr class="border-t">
+                    <td class="px-6 py-4">1</td>
+                    <td class="px-6 py-4 font-medium"> Direktur </td>
+                    <td class="px-6 py-4"> Pimpinan </td>
+                    <td class="px-6 py-4"> 1 Orang </td>
+                    <td class="px-6 py-4">
+                        <button class="text-blue-600 hover:underline"> Edit </button>
+                        <button class="text-red-600 hover:underline ml-3">  Hapus </button>
+                    </td>
+                </tr>
+                <tr class="border-t">
+                    <td class="px-6 py-4">2</td>
+                    <td class="px-6 py-4 font-medium"> Manager IT </td>
+                    <td class="px-6 py-4"> Manajemen </td>
+                    <td class="px-6 py-4"> 5 Orang </td>
+                    <td class="px-6 py-4">
+                        <button class="text-blue-600 hover:underline"> Edit </button>
+                        <button class="text-red-600 hover:underline ml-3"> Hapus </button>
+                    </td>
+                </tr>
+                <tr class="border-t">
+                    <td class="px-6 py-4">3</td>
+                    <td class="px-6 py-4 font-medium"> Staff Administrasi </td>
+                    <td class="px-6 py-4"> Staff </td>
+                    <td class="px-6 py-4"> 12 Orang </td>
+                    <td class="px-6 py-4">
+                        <button class="text-blue-600 hover:underline"> Edit </button>
+                        <button class="text-red-600 hover:underline ml-3"> Hapus </button>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+<script src="frontend/assets/js/app.js"></script>
+<script>
+    async function loadJabatan()
+    {
+        const response = await getData("jabatan");
+        let html = "";
+        response.data.forEach((jabatan,index)=>{
+        html += `
+            <tr class="border-t">
+                <td class="px-6 py-4"> ${index+1} </td>
+                <td class="px-6 py-4 font-medium"> ${jabatan.nama_jabatan} </td>
+                <td class="px-6 py-4"> Rp ${Number(jabatan.gaji_pokok).toLocaleString("id-ID")} </td>
+                <td class="px-6 py-4"> ${jabatan.jumlah_pegawai} Orang </td>
+                <td class="px-6 py-4">
+                    <button onclick="editJabatan(${jabatan.id})" class="text-blue-600 hover:underline"> Edit </button>
+                    <button onclick="hapusJabatan(${jabatan.id})" class="text-red-600 hover:underline ml-3"> Hapus </button>
+                </td>
+            </tr>
+        `;
+    });
+
+    document.getElementById("jabatanTable").innerHTML = html;
+
+}
+
+loadJabatan();
+
+async function hapusJabatan(id)
+{
+
+    if(!confirm("Hapus jabatan ini?"))
+        return;
+
+    const response = await fetch(
+        API+"jabatan&id="+id,
+        {
+            method:"DELETE"
+        }
+    );
+
+    const result = await response.json();
+    alert(result.message);
+    loadJabatan();
+
+}
+
+async function editJabatan(id)
+{
+
+    const response = await getData(
+        "jabatan/show&id=" + id
+    );
+
+    console.log(response);
+    const jabatan = response.data;
+    document.getElementById("edit_id").value = jabatan.id;
+    document.getElementById("edit_nama_jabatan").value = jabatan.nama_jabatan;
+    document.getElementById("edit_gaji_pokok").value = jabatan.gaji_pokok;
+    document
+    .getElementById("modalJabatan")
+    .classList
+    .remove("hidden");
+
+}
+
+document.getElementById("closeEdit")
+.onclick = function(){
+    document
+    .getElementById("modalJabatan")
+    .classList
+    .add("hidden");
+
+}
+
+document
+.getElementById("formEditJabatan")
+.addEventListener("submit", async function(e){
+    e.preventDefault();
+    const data = new URLSearchParams();
+    data.append(
+        "id",
+        document.getElementById("edit_id").value
+    );
+
+    data.append(
+        "nama_jabatan",
+        document.getElementById("edit_nama_jabatan").value
+    );
+
+    data.append(
+        "gaji_pokok",
+        document.getElementById("edit_gaji_pokok").value
+    );
+
+
+    const response = await fetch(
+    API + "jabatan",
+    {
+        method: "PUT",
+        body: data
+    }
+);
+
+const text = await response.text();
+console.log(text);
+
+
+    alert(result.message);
+    document
+    .getElementById("modalJabatan")
+    .classList
+    .add("hidden");
+    loadJabatan();
+
+});
+
+</script>

@@ -5,6 +5,7 @@ require_once __DIR__ . '/../models/AuthModel.php';
 class AuthController
 {
     private $authModel;
+
     public function __construct()
     {
         $this->authModel = new AuthModel();
@@ -12,14 +13,16 @@ class AuthController
 
     public function index()
     {
-        require_once 'frontend/auth/login.php';
+        $title = "Login";
+        require_once __DIR__ . "/../../frontend/login.php";
     }
 
     public function login()
     {
-        session_start();
+
         $username = trim($_POST['username']);
         $password = trim($_POST['password']);
+
         if (empty($username) || empty($password)) {
             $_SESSION['error'] = "Username dan Password wajib diisi.";
             header("Location: index.php?page=login");
@@ -27,6 +30,7 @@ class AuthController
         }
 
         $user = $this->authModel->loginUser($username);
+
         if (!$user) {
             $_SESSION['error'] = "Username tidak ditemukan.";
             header("Location: index.php?page=login");
@@ -45,9 +49,9 @@ class AuthController
         $_SESSION['role'] = $user['role'];
 
         if ($user['role'] == 'admin') {
-            header("Location: index.php?page=dashboard_admin");
+            header("Location: index.php?page=dashboard");
         } else {
-            header("Location: index.php?page=dashboard_pegawai");
+            header("Location: index.php?page=dashboard");
         }
 
         exit;
@@ -55,8 +59,8 @@ class AuthController
 
     public function logout()
     {
-        session_start();
         session_destroy();
+
         header("Location: index.php?page=login");
         exit;
     }

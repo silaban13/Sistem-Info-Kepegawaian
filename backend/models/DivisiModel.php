@@ -50,11 +50,35 @@ class DivisiModel
     }
 
     public function delete($id)
-    {
-        $sql = "DELETE FROM divisi WHERE id = ?";
-        $stmt = $this->conn->prepare($sql);
-        $stmt->bind_param("i", $id);
+{
+    // cek apakah divisi masih dipakai pegawai
+    $check = "
+        SELECT COUNT(*) AS total
+        FROM pegawai
+        WHERE id_divisi = ?
+    ";
 
-        return $stmt->execute();
+    $stmt = $this->conn->prepare($check);
+    $stmt->bind_param("i", $id);
+    $stmt->execute();
+
+    $result = $stmt->get_result()->fetch_assoc();
+
+
+    if ($result['total'] > 0) {
+        return false;
     }
+
+
+    // hapus jika tidak dipakai
+    $sql = "
+        DELETE FROM divisi
+        WHERE id = ?
+    ";
+
+    $stmt = $this->conn->prepare($sql);
+    $stmt->bind_param("i", $id);
+
+    return $stmt->execute();
+}
 }

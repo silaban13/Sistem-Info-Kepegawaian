@@ -80,9 +80,17 @@ class UserController
     public function update()
     {
         parse_str(file_get_contents("php://input"), $put);
-        $id       = $put['id'];
-        $username = $put['username'];
-        $role     = $put['role'];
+        $id       = $put['id'] ?? '';
+        $username = trim($put['username'] ?? '');
+        $role     = trim($put['role'] ?? '');
+        if (empty($id) || empty($username) || empty($role)) {
+            http_response_code(400);
+            echo json_encode([
+                "status" => false,
+                "message" => "Semua field wajib diisi."
+            ]);
+            return;
+        }
 
         $this->model->update($id, $username, $role);
         echo json_encode([
@@ -90,6 +98,52 @@ class UserController
             "message" => "User berhasil diperbarui"
         ]);
     }
+
+
+   public function prosesEdit()
+{
+    $id       = $_POST['id'];
+    $username = $_POST['username'];
+    $role     = $_POST['role'];
+
+    // Kirim ke API menggunakan cURL
+    $data = http_build_query([
+        "id" => $id,
+        "username" => $username,
+        "role" => $role
+    ]);
+
+    $ch = curl_init("http://localhost:8080/Sistem-Info-Kepegawaian/backend/api/index.php?route=users");
+
+    curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "PUT");
+    curl_setopt($ch, CURLOPT_POSTFIELDS, $data);
+    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+
+    curl_exec($ch);
+    curl_close($ch);
+
+    header("Location: index.php?page=user");
+    exit;
+}
+
+public function prosesHapus()
+{
+    $id = $_GET['id'];
+
+    $ch = curl_init(
+        "http://localhost:8080/Sistem-Info-Kepegawaian/backend/api/index.php?route=users&id=$id"
+    );
+
+    curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "DELETE");
+    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+
+    $response = curl_exec($ch);
+    curl_close($ch);
+
+    header("Location: index.php?page=user");
+    exit;
+}
+
 
     public function updatePassword()
     {
@@ -111,4 +165,32 @@ class UserController
             "message" => "User berhasil dihapus"
         ]);
     }
+
+
+   public function prosesTambah()
+{
+    $username = $_POST['username'];
+    $password = $_POST['password'];
+    $role     = $_POST['role'];
+
+    $data = http_build_query([
+        "username" => $username,
+        "password" => $password,
+        "role"     => $role
+    ]);
+
+    $ch = curl_init("http://localhost:8080/Sistem-Info-Kepegawaian/backend/api/index.php?route=register");
+
+    curl_setopt($ch, CURLOPT_POST, true);
+    curl_setopt($ch, CURLOPT_POSTFIELDS, $data);
+    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+
+    curl_exec($ch);
+    curl_close($ch);
+
+    header("Location: index.php?page=user");
+    exit;
+}
+
+
 }

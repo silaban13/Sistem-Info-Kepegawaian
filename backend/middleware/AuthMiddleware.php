@@ -4,9 +4,7 @@ class AuthMiddleware
 {
     public static function checkLogin()
     {
-        session_start();
-
-        if (!isset($_SESSION['login'])) {
+        if (!isset($_SESSION['login']) || $_SESSION['login'] !== true) {
             header("Location: index.php?page=login");
             exit;
         }
@@ -19,6 +17,4 @@ class AuthMiddleware
             exit;
         }
     }
-    
 }
-

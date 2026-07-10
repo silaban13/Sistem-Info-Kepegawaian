@@ -20,3 +20,29 @@ async function loadDashboard()
 
 
 loadDashboard();
+
+async function loadDashboardProfile()
+{
+    const response = await getData("profile");
+
+    const user = response.data;
+
+
+    let title = "";
+
+    if(user.role == "admin"){
+        title = "Dashboard Admin";
+    }else{
+        title = "Dashboard User";
+    }
+
+
+    document.getElementById("dashboardTitle").innerHTML = title;
+
+
+    document.getElementById("welcomeUser").innerHTML =
+        `Selamat datang, ${user.nama}`;
+}
+
+
+loadDashboardProfile();

@@ -48,20 +48,71 @@ class AuthController
         $_SESSION['username'] = $user['username'];
         $_SESSION['role'] = $user['role'];
 
+        $_SESSION['id_pegawai'] = $user['id_pegawai'];
+        $_SESSION['nama'] = $user['nama'];
+
         if ($user['role'] == 'admin') {
             header("Location: index.php?page=dashboard");
         } else {
             header("Location: index.php?page=dashboard");
         }
 
+
         exit;
     }
+
+    
+    public function register()
+{
+    $username = $_POST['username'];
+    $password = $_POST['password'];
+    $role = $_POST['role'];
+
+
+    $hashPassword = password_hash(
+        $password,
+        PASSWORD_DEFAULT
+    );
+
+
+    $result = $this->authModel->registerUser(
+        $username,
+        $hashPassword,
+        $role
+    );
+
+
+    if($result){
+
+        echo json_encode([
+            "status"=>true,
+            "message"=>"User berhasil dibuat"
+        ]);
+
+    }else{
+
+        echo json_encode([
+            "status"=>false,
+            "message"=>"Gagal membuat user"
+        ]);
+
+    }
+}
+
 
     public function logout()
     {
+        session_start();
+
+        session_unset();
+
         session_destroy();
 
+
         header("Location: index.php?page=login");
+
         exit;
     }
+
+
 }

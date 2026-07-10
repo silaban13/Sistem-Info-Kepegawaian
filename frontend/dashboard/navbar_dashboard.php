@@ -6,8 +6,10 @@
         <div class="flex items-center gap-4">
 
             <!-- Tombol Sidebar -->
-            <button id="sidebarButton"
+           <button
+                id="sidebarButton"
                 class="lg:hidden p-2 rounded-lg hover:bg-gray-100">
+
 
                 <svg xmlns="http://www.w3.org/2000/svg"
                     class="w-6 h-6"
@@ -23,6 +25,7 @@
 
             </button>
 
+        
             <div>
 
                 <h2 class="text-xl font-bold text-gray-800">
@@ -34,6 +37,8 @@
                 </p>
 
             </div>
+
+            
 
         </div>
 
@@ -71,7 +76,7 @@
             <button class="flex items-center gap-3 hover:bg-gray-100 rounded-lg p-2">
 
                 <img
-                    src="/Sistem-Info-Kepegawaian/frontend/assets/images/logo_html.png"
+                    src="/Sistem-Info-Kepegawaian/frontend/assets/images/logo_web.png"
                     class="w-10 h-10 rounded-full object-cover border">
 
                 <div class="hidden md:block text-left">
@@ -93,3 +98,4 @@
     </div>
 
 </nav>
+

@@ -6,18 +6,26 @@
             dan memantau riwayat cuti dalam sistem kepegawaian.
         </p>
     </div>
+
     <div class="flex justify-between items-center">
         <h2 class="text-xl font-semibold text-gray-700"> Daftar Pengajuan Cuti </h2>
         <button id="btnAjukanCuti" class="bg-blue-600 text-white px-5 py-2 rounded-lg hover:bg-blue-700"> + Ajukan Cuti </button>
     </div>
+
     <div id="modalCuti" class="hidden fixed inset-0 bg-black bg-opacity-40 flex items-center justify-center">
         <div class="bg-white rounded-xl p-6 w-full max-w-md">
             <h2 class="text-xl font-bold mb-4"> Ajukan Cuti </h2>
             <form id="formCuti">
-                <label class="block mb-2"> Pegawai </label>
-                <select id="id_pegawai" class="w-full border rounded-lg p-2 mb-4" required>
-                    <option value=""> Pilih Pegawai </option>
-                </select>
+                
+                <div class="mb-4">
+            <label class="block mb-2 font-medium">
+                Pengaju Cuti
+            </label>
+
+                <div id="namaPengaju" class="bg-gray-100 px-4 py-3 rounded-lg">
+                Memuat...
+            </div>
+        </div>
                 <label class="block mb-2"> Tanggal Mulai </label>
                 <input type="date" id="tanggal_mulai" class="w-full border rounded-lg p-2 mb-4" required>
                 <label class="block mb-2"> Tanggal Selesai </label>
@@ -93,15 +101,26 @@
                         <td class="px-6 py-4"> ${badge} </td>
                         <td class="px-6 py-4">
                             ${
-                                cuti.status == "Pending" ?
-                                `
-                                <button onclick="updateStatus(${cuti.id}, 'Disetujui')" class="bg-green-600 text-white px-3 py-1 rounded">
-                                    Setujui
-                                </button>
-                                <button onclick="updateStatus(${cuti.id}, 'Ditolak')" class="bg-red-600 text-white px-3 py-1 rounded">
-                                    Tolak
-                                </button>
-                                ` : "-"
+
+                                role == "admin" && cuti.status == "Pending" 
+                                    ?
+                                    `
+                                    <button 
+                                    onclick="updateStatus(${cuti.id}, 'Disetujui')" 
+                                    class="bg-green-600 text-white px-3 py-1 rounded">
+                                        Setujui
+                                    </button>
+
+                                    <button 
+                                    onclick="updateStatus(${cuti.id}, 'Ditolak')" 
+                                    class="bg-red-600 text-white px-3 py-1 rounded">
+                                        Tolak
+                                    </button>
+                                    `
+                                    :
+                                    "-"
+
+
                             }
                         </td>
                     </tr>
@@ -128,73 +147,117 @@
             modal.classList.add("hidden");
         }   
 
+        let profile = null;
+        let role = null;
+
+   async function loadProfile()
+{
+    const response = await getData("profile");
+
+    profile = response.data;
+
+    role = profile.role;
+
+    document.getElementById("namaPengaju").innerHTML =
+        profile.nama;
+
+
+    if(profile.role == "admin"){
+
+        document.getElementById("btnAjukanCuti").style.display = "none";
+
+    }
+}
+
+loadProfile();
+
+
         document.getElementById("formCuti")
 
         .addEventListener("submit", async function(e){
             e.preventDefault();
-            const data = {
-                id_pegawai:
-                document.getElementById("id_pegawai").value,
-                tanggal_mulai:
-                document.getElementById("tanggal_mulai").value,
-                tanggal_selesai:
-                document.getElementById("tanggal_selesai").value,
-                alasan:
-                document.getElementById("alasan").value,
-                status:"Pending"
-            };
 
-            const response = await fetch(
-                API + "cuti",
-                {
-                    method:"POST",
-                    headers:{ "Content-Type":"application/json" },
-                    body:JSON.stringify(data)
-                }
-            );
+          const data = {
+    id_pegawai: profile.id_pegawai,
+    tanggal_mulai: document.getElementById("tanggal_mulai").value,
+    tanggal_selesai: document.getElementById("tanggal_selesai").value,
+    alasan: document.getElementById("alasan").value,
+    status: "Pending"
+};
 
-            const text = await response.text();
-            console.log("RESPON POST:", text);
-            const result = JSON.parse(text);
-            alert(result.message);
-            modal.classList.add("hidden");
-            loadCuti();
+console.log(data);
+
+          const response = await fetch(
+    API + "cuti",
+    {
+        method:"POST",
+        headers:{
+            "Content-Type":"application/json"
+        },
+        body:JSON.stringify(data)
+    }
+);
+
+
+let result;
+
+try {
+
+    result = await response.json();
+
+} catch(error){
+
+    const text = await response.text();
+
+    console.error("Response bukan JSON:", text);
+
+    alert("Terjadi kesalahan server");
+    return;
+}
+
+
+alert(result.message);
+
+modal.classList.add("hidden");
+
+loadCuti();
+
         });
+       
 
-        async function loadPegawai()
+        async function updateStatus(id,status)
+{
+    const response = await fetch(
+        API+"cuti/status",
         {
-            const response = await getData("pegawai");
-            let html = ` <option value=""> Pilih Pegawai </option> `;
-            response.data.forEach((pegawai)=>{
-                html += ` <option value="${pegawai.id}"> ${pegawai.nama} </option> `;
-            });
-
-            document.getElementById("id_pegawai").innerHTML = html;
-
+            method:"PUT",
+            headers:{
+                "Content-Type":"application/json"
+            },
+            body:JSON.stringify({
+                id:id,
+                status:status
+            })
         }
-        loadPegawai();
+    );
 
-        async function updateStatus(id, status)
-        {
-            const response = await fetch(
-                API + "cuti/status",
-                {
-                    method:"PUT",
-                    headers:{
-                        "Content-Type":"application/json"
-                    },
-                    body:JSON.stringify({
-                        id:id,
-                        status:status
-                    })
-                }
-            );
 
-            const result = await response.json();
-            alert(result.message);
-            loadCuti();
+    const result = await response.json();
 
-        }
+    alert(result.message);
+
+    loadCuti();
+}
+
+
+loadProfile();
+
+
+
+
+
+
+
 
 </script>
 

@@ -9,17 +9,25 @@
 
 <div class="space-y-6">
     <div>
-        <h1 class="text-3xl font-bold text-gray-800"> Data Pegawai </h1>
+        <h1 class="text-3xl font-bold text-gray-800"> Status Pegawai </h1>
         <p class="mt-2 text-gray-600">
             Kelola informasi pegawai yang terdaftar pada Sistem Informasi Kepegawaian.
             Anda dapat melihat, menambah, mengubah, dan menghapus data pegawai.
         </p>
     </div>
-    <div class="flex justify-between items-center">
-        <h2 class="text-xl font-semibold text-gray-700"> Daftar Pegawai </h2>
-        <a href="?page=tambah_pegawai" class="bg-blue-600 text-white px-5 py-2 rounded-lg hover:bg-blue-700"> + Tambah Pegawai </a>
 
-    </div>
+    <div class="flex justify-between items-center">
+    <h2 class="text-xl font-semibold text-gray-700">
+        Daftar Pegawai
+    </h2>
+
+    <a id="btnTambahPegawai"
+       href="?page=tambah_pegawai"
+       class="bg-blue-600 text-white px-5 py-2 rounded-lg hover:bg-blue-700">
+        + Tambah Pegawai
+    </a>
+</div>
+
     <div class="bg-white rounded-xl shadow overflow-hidden">
         <table class="w-full text-left">
             <thead class="bg-gray-100">
@@ -48,3 +56,27 @@
         </table>
     </div>
 </div>
+
+<script src="frontend/assets/js/app.js"></script>
+
+<script>
+async function checkRole()
+{
+    const response = await getData("profile");
+
+    console.log(response);
+
+    const user = response.data;
+
+
+    if(user.role !== "admin"){
+
+        document.getElementById("btnTambahPegawai").style.display = "none";
+
+    }
+
+}
+
+checkRole();
+
+</script>

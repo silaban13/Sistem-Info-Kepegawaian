@@ -67,11 +67,34 @@ class JabatanModel
     }
 
     public function delete($id)
-    {
-        $sql = "DELETE FROM jabatan WHERE id = ?";
-        $stmt = $this->conn->prepare($sql);
-        $stmt->bind_param("i", $id);
+{
 
-        return $stmt->execute();
+    // cek apakah masih digunakan pegawai
+    $cek = $this->conn->prepare(
+        "SELECT id FROM pegawai WHERE id_jabatan = ?"
+    );
+
+    $cek->bind_param("i", $id);
+    $cek->execute();
+
+    $result = $cek->get_result();
+
+
+    if($result->num_rows > 0){
+
+        return "used";
+
     }
+
+
+    $sql = "DELETE FROM jabatan WHERE id = ?";
+
+    $stmt = $this->conn->prepare($sql);
+
+    $stmt->bind_param("i",$id);
+
+
+    return $stmt->execute();
+
+}
 }

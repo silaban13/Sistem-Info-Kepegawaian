@@ -2,7 +2,6 @@ document.addEventListener("DOMContentLoaded", function(){
 
     loadDivisi();
     loadJabatan();
-    loadUser();
 
 });
 
@@ -70,35 +69,6 @@ function loadJabatan(){
 }
 
 
-function loadUser(){
-
-    fetch("http://localhost:8080/Sistem-Info-Kepegawaian/backend/api/index.php?route=users")
-    .then(response => response.json())
-    .then(result => {
-
-        let select = document.getElementById("id_user");
-
-
-        if(result.status){
-
-            result.data.forEach(item => {
-
-                select.innerHTML += `
-                    <option value="${item.id}">
-                        ${item.username}
-                    </option>
-                `;
-
-            });
-
-        }
-
-    })
-    .catch(error => {
-        console.error(error);
-    });
-
-}
 
 document.getElementById("formPegawai").addEventListener("submit", function(e){
 
@@ -153,3 +123,4 @@ document.getElementById("formPegawai").addEventListener("submit", function(e){
 
 
 });
+

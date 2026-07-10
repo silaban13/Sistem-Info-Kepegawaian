@@ -28,6 +28,79 @@
             </form>
         </div>
     </div>
+
+
+    <div id="modalTambahJabatan"
+class="hidden fixed inset-0 bg-black bg-opacity-40 flex items-center justify-center z-50">
+
+    <div class="bg-white rounded-xl shadow-lg p-6 w-full max-w-md">
+
+        <h2 class="text-xl font-bold text-gray-800 mb-5">
+            Tambah Jabatan
+        </h2>
+
+        <form id="formTambahJabatan">
+
+            <div class="mb-4">
+                <label class="block mb-2 font-medium text-gray-700">
+                    Nama Jabatan
+                </label>
+
+                <input 
+                    type="text"
+                    id="nama_jabatan"
+                    placeholder="Masukkan nama jabatan"
+                    class="w-full border border-gray-300 rounded-lg px-4 py-3 
+                    focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    required
+                >
+            </div>
+
+
+            <div class="mb-4">
+                <label class="block mb-2 font-medium text-gray-700">
+                    Gaji Pokok
+                </label>
+
+                <input 
+                    type="number"
+                    id="gaji_pokok"
+                    placeholder="Masukkan gaji pokok"
+                    class="w-full border border-gray-300 rounded-lg px-4 py-3 
+                    focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    required
+                >
+            </div>
+
+
+            <div class="flex justify-end gap-3 mt-6">
+
+                <button 
+                    type="button" 
+                    id="closeTambah"
+                    class="px-5 py-2 bg-gray-300 text-gray-700 rounded-lg 
+                    hover:bg-gray-400">
+                    Batal
+                </button>
+
+
+                <button 
+                    type="submit"
+                    class="px-5 py-2 bg-blue-600 text-white rounded-lg 
+                    hover:bg-blue-700">
+                    Simpan
+                </button>
+
+            </div>
+
+        </form>
+
+    </div>
+
+</div>
+
+
+
     <div class="bg-white rounded-xl shadow overflow-hidden">
         <table class="w-full text-left">
             <thead class="bg-gray-100">
@@ -178,7 +251,12 @@ document
 );
 
 const text = await response.text();
-console.log(text);
+
+const result = JSON.parse(text);
+
+console.log(result);
+
+alert(result.message);
 
 
     alert(result.message);
@@ -186,6 +264,70 @@ console.log(text);
     .getElementById("modalJabatan")
     .classList
     .add("hidden");
+    loadJabatan();
+
+});
+
+
+const btnTambahJabatan = document.getElementById("btnTambahJabatan");
+const modalTambahJabatan = document.getElementById("modalTambahJabatan");
+
+btnTambahJabatan.onclick = function(){
+    modalTambahJabatan.classList.remove("hidden");
+};
+
+
+document.getElementById("closeTambah").onclick = function(){
+
+    document
+    .getElementById("modalTambahJabatan")
+    .classList
+    .add("hidden");
+
+};
+
+
+document
+.getElementById("formTambahJabatan")
+.addEventListener("submit", async function(e){
+
+    e.preventDefault();
+
+
+    const data = new URLSearchParams();
+
+    data.append(
+        "nama_jabatan",
+        document.getElementById("nama_jabatan").value
+    );
+
+
+    data.append(
+        "gaji_pokok",
+        document.getElementById("gaji_pokok").value
+    );
+
+
+    const response = await fetch(
+        API + "jabatan",
+        {
+            method:"POST",
+            body:data
+        }
+    );
+
+
+    const result = await response.json();
+
+    alert(result.message);
+
+
+    document
+    .getElementById("modalTambahJabatan")
+    .classList
+    .add("hidden");
+
+
     loadJabatan();
 
 });

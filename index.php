@@ -2,6 +2,7 @@
 
 session_start();
 
+
 require_once __DIR__ . '/backend/config/koneksi.php';
 require_once __DIR__ . '/backend/models/AuthModel.php';
 require_once __DIR__ . '/backend/controllers/AuthController.php';
@@ -107,47 +108,106 @@ switch ($page) {
         require __DIR__ . '/frontend/dashboard/dashboard_template.php';
         break;
 
-    case 'user':
-        $title = "User";
-        $content = __DIR__ . '/frontend/dashboard/pages/user.php';
-        require __DIR__ . '/frontend/dashboard/dashboard_template.php';
-        break;
 
-    case "edit_user":
-        $title = "Edit User";
-        $content = __DIR__ . "/frontend/dashboard/pages/edit_user.php";
-        require __DIR__ . "/frontend/dashboard/dashboard_template.php";
-        break;
+   case 'user':
 
-    case 'proses_edit_user':
-        require_once __DIR__ . '/backend/controllers/UserController.php';
-        $controller = new UserController();
-        $controller->prosesEdit();
-        break;
+    AuthMiddleware::checkLogin();
+    AuthMiddleware::checkAdmin();
 
-    case "hapus_user":
-        require_once __DIR__ . "/backend/controllers/UserController.php";
-        $controller = new UserController();
-        $controller->prosesHapus();
-        break;
+    $title = "User";
+    $content = __DIR__ . '/frontend/dashboard/pages/user.php';
 
-    case "tambah_user":
-        $title = "Tambah User";
-        $content = __DIR__ . "/frontend/dashboard/pages/tambah_user.php";
-        require __DIR__ . "/frontend/dashboard/dashboard_template.php";
-        break;
+    require __DIR__ . '/frontend/dashboard/dashboard_template.php';
 
-    case "proses_tambah_user":
-        require_once __DIR__ . "/backend/controllers/UserController.php";
-        $controller = new UserController();
-        $controller->prosesTambah();
-        break;
+break;
+
+
+case "register":
+
+    require_once __DIR__ . "/../controllers/AuthController.php";
+
+    $controller = new AuthController();
+
+    $controller->register();
+
+break;
+
+
+
+case "edit_user":
+
+    AuthMiddleware::checkLogin();
+    AuthMiddleware::checkAdmin();
+
+    $title = "Edit User";
+    $content = __DIR__ . "/frontend/dashboard/pages/edit_user.php";
+
+    require __DIR__ . "/frontend/dashboard/dashboard_template.php";
+
+break;
+
+
+
+case 'proses_edit_user':
+
+    AuthMiddleware::checkLogin();
+    AuthMiddleware::checkAdmin();
+
+    require_once __DIR__ . '/backend/controllers/UserController.php';
+
+    $controller = new UserController();
+    $controller->prosesEdit();
+
+break;
+
+
+
+case "hapus_user":
+
+    AuthMiddleware::checkLogin();
+    AuthMiddleware::checkAdmin();
+
+    require_once __DIR__ . "/backend/controllers/UserController.php";
+
+    $controller = new UserController();
+    $controller->prosesHapus();
+
+break;
+
+
+
+case "tambah_user":
+
+    AuthMiddleware::checkLogin();
+    AuthMiddleware::checkAdmin();
+
+    $title = "Tambah User";
+    $content = __DIR__ . "/frontend/dashboard/pages/tambah_user.php";
+
+    require __DIR__ . "/frontend/dashboard/dashboard_template.php";
+
+break;
+
+
+case "proses_tambah_user":
+
+    AuthMiddleware::checkLogin();
+    AuthMiddleware::checkAdmin();
+
+    require_once __DIR__ . "/backend/controllers/UserController.php";
+
+    $controller = new UserController();
+
+    $controller->prosesTambah();
+
+break;
+
 
     case "login":
-        $title = "Login";
-        $content = __DIR__ . "/frontend/login.php";
-        require __DIR__ . "/frontend/layout/template.php";
-        break;
+    $title = "Login";
+    $content = __DIR__ . "/frontend/login.php";
+    require __DIR__ . "/frontend/layout/auth_template.php";
+    break;
 
     case "proses_login":
         $authController->login();
@@ -159,6 +219,32 @@ switch ($page) {
         $content = __DIR__ . '/frontend/dashboard/dashboard.php';
         require __DIR__ . '/frontend/dashboard/dashboard_template.php';
         break;
+
+
+    case "search":
+
+        require_once __DIR__ . "/../controllers/SearchController.php";
+        $controller = new SearchController();
+        $controller->search();
+        break;
+
+
+      case "profile":
+
+session_start();
+
+echo json_encode([
+    "status" => true,
+    "data" => [
+        "nama" => $_SESSION['nama'],
+        "id_pegawai" => $_SESSION['id_pegawai'],
+        "role" => $_SESSION['role']
+    ]
+]);
+
+break;
+
+break;
 
     case 'logout':
         $authController->logout();

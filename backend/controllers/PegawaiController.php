@@ -64,17 +64,19 @@ class PegawaiController
         $status         = $_POST['status'] ?? '';
         $idDivisi       = $_POST['id_divisi'] ?? '';
         $idJabatan      = $_POST['id_jabatan'] ?? '';
-        $idUser         = $_POST['id_user'] ?? '';
+        $idUser         = $_POST['id_user'] ?? null;
 
-        if (
-            empty($nip) ||
-            empty($nama) ||
-            empty($jenisKelamin) ||
-            empty($tanggalLahir) ||
-            empty($status) ||
-            empty($idDivisi) ||
-            empty($idJabatan) ||
-            empty($idUser)
+
+    if (
+        empty($nip) ||
+        empty($nama) ||
+        empty($jenisKelamin) ||
+        empty($tanggalLahir) ||
+        empty($status) ||
+        empty($idDivisi) ||
+        empty($idJabatan)
+
+
         ) {
             http_response_code(400);
 

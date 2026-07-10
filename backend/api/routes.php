@@ -11,6 +11,8 @@ require_once __DIR__ . "/../controllers/JabatanController.php";
 require_once __DIR__ . "/../controllers/PegawaiController.php";
 require_once __DIR__ . "/../controllers/CutiController.php";
 require_once __DIR__ . "/../controllers/DashboardController.php";
+require_once __DIR__ . "/../controllers/SearchController.php";
+require_once __DIR__ . "/../middleware/AuthMiddleware.php";
 
 $router->post("login", [AuthController::class, "login"]);
 
@@ -50,8 +52,14 @@ $router->post("cuti", [CutiController::class, "store"]);
 $router->put("cuti", [CutiController::class, "update"]);
 $router->delete("cuti", [CutiController::class, "destroy"]);
 $router->put("cuti/status", [CutiController::class, "updateStatus"]);
+require_once __DIR__ . "/../controllers/ProfileController.php";
 
 $router->get("dashboard", [DashboardController::class, "index"]);
+
+$router->get("search", [SearchController::class, "search"]);
+
+$router->get("profile", [ProfileController::class, "index"]);
+
 
 
 $router->run();

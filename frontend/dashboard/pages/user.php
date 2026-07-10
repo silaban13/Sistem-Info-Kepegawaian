@@ -26,10 +26,16 @@
             termasuk pengaturan hak akses dan status pengguna.
         </p>
     </div>
-    <div class="flex justify-between items-center">
+
+    <?php if($_SESSION['role'] == 'admin'): ?>
+
+        <div class="flex justify-between items-center">
         <h2 class="text-xl font-semibold text-gray-700"> Daftar User </h2>
         <a href="?page=tambah_user" class="bg-blue-600 text-white px-5 py-2 rounded-lg hover:bg-blue-700"> + Tambah User </a>
     </div>
+
+    <?php endif; ?>
+
     <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
         <div class="bg-white rounded-xl shadow p-6">
             <p class="text-gray-500 text-sm"> Total User </p>
@@ -72,10 +78,24 @@
                             <span class="bg-green-100 text-green-700 px-3 py-1 rounded-full text-sm">  Aktif </span>
                         </td>
                         <td class="px-6 py-4">
-                            <div class="flex items-center gap-4">
+                           
+
+                            <?php if($_SESSION['role'] == 'admin'): ?>
+
+                         <div class="flex items-center gap-4">
                                 <a href="?page=edit_user&id=<?= $user['id'] ?>" class="text-blue-600 hover:text-blue-800 font-medium"> Edit </a>
                                 <a href="?page=hapus_user&id=<?= $user['id'] ?>" onclick="return confirm('Yakin ingin menghapus user ini?')" class="text-red-600 hover:text-red-800 font-medium"> Hapus </a>
                             </div>
+
+        <?php else: ?>
+
+        <span class="text-gray-400">
+            Read Only
+        </span>
+
+        <?php endif; ?>
+
+
                         </td>
                     </tr>
                 <?php endforeach; ?>

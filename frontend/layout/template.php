@@ -15,7 +15,7 @@
 <?php include __DIR__ . '/navbar.php'; ?>
 
 <div style="display:flex;">
-    <main style="flex:1; padding:20px;">
+    <main id="content" style="flex:1; padding:10px;">
         <?php
             if (isset($content) && file_exists($content)) {
                 include $content;

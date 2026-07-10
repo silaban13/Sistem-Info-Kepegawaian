@@ -106,12 +106,39 @@ class JabatanController
     }
 
     public function destroy($id)
-    {
-        $this->model->delete($id);
+{
+
+    $result = $this->model->delete($id);
+
+
+    if($result === "used"){
 
         echo json_encode([
-            "status"  => true,
-            "message" => "Data jabatan berhasil dihapus"
+            "status"=>false,
+            "message"=>"Jabatan tidak bisa dihapus karena masih digunakan pegawai"
         ]);
+
+        return;
+
     }
+
+
+    if(!$result){
+
+        echo json_encode([
+            "status"=>false,
+            "message"=>"Gagal menghapus jabatan"
+        ]);
+
+        return;
+
+    }
+
+
+    echo json_encode([
+        "status"=>true,
+        "message"=>"Data jabatan berhasil dihapus"
+    ]);
+
+}
 }

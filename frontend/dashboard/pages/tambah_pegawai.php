@@ -1,11 +1,11 @@
-<div class="max-w-6xl mx-auto">
+<div class="max-w-7xl mx-auto">
     <div class="mb-8">
         <h1 class="text-3xl font-bold text-gray-800"> Tambah Data Pegawai </h1>
         <p class="mt-2 text-gray-600"> Lengkapi seluruh data pegawai sebelum disimpan ke dalam sistem. </p>
     </div>
-    <div class="bg-white rounded-xl shadow-lg p-8">
+    <div class="bg-white rounded-xl shadow-lg p-6">
         <form id="formPegawai" enctype="multipart/form-data">
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                 <div>
                     <label class="block mb-2 font-medium text-gray-700"> NIP </label>
                     <div id="message"></div>
@@ -60,12 +60,6 @@
                     </select>
                 </div>
 
-                <div>
-                    <label class="block mb-2 font-medium text-gray-700"> User </label>
-                    <select id="id_user" name="id_user" class="w-full border rounded-lg px-4 py-3">
-                        <option value="">Pilih User</option>
-                    </select>
-                </div>
 
             </div>
             <div class="mt-6">

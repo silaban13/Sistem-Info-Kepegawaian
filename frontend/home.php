@@ -1,32 +1,46 @@
-<section class="max-w-7xl mx-auto px-5 lg:px-10 py-8 lg:py-12">
-    <div class="bg-gradient-to-r from-blue-600 to-blue-800 rounded-2xl text-white p-6 md:p-10 shadow-lg">
-        <h1 class="text-3xl md:text-4xl lg:text-5xl font-bold leading-tight"> Selamat Datang di Sistem Informasi Kepegawaian </h1>
-        <p class="mt-5 text-base md:text-lg leading-7 md:leading-8 max-w-3xl">
-            Sistem Informasi Kepegawaian merupakan aplikasi berbasis web
-            yang dirancang untuk membantu perusahaan mengelola data pegawai,
-            absensi, cuti, divisi, dan jabatan secara cepat, aman, serta efisien.
-        </p>
-        <div class="mt-8 flex flex-col sm:flex-row gap-4">
-            <a href="?page=login" class="text-center bg-white text-blue-700 font-semibold px-6 py-3 rounded-lg hover:bg-gray-100 transition"> Login </a>
-            <a href="?page=about" class="text-center border border-white px-6 py-3 rounded-lg hover:bg-white hover:text-blue-700 transition"> Pelajari Lebih Lanjut </a>
+<section class="py-8 lg:py-12">
+
+    <div class="px-0.5 sm:px-4 lg:px-10">
+        <div class="bg-gradient-to-r from-blue-600 to-blue-800 rounded-2xl text-white p-6 md:p-10 shadow-lg">
+            <h1 class="text-3xl md:text-4xl lg:text-5xl font-bold leading-tight"> Selamat Datang di Sistem Informasi Kepegawaian </h1>
+            <p class="mt-5 text-base md:text-lg leading-7 md:leading-8 max-w-3xl">
+                Sistem Informasi Kepegawaian merupakan aplikasi berbasis web
+                yang dirancang untuk membantu perusahaan mengelola data pegawai,
+                absensi, cuti, divisi, dan jabatan secara cepat, aman, serta efisien.
+            </p>
+            <div class="mt-8 flex flex-col sm:flex-row gap-4">
+                <a href="?page=login" class="text-center bg-white text-blue-700 font-semibold px-6 py-3 rounded-lg hover:bg-gray-100 transition"> Login </a>
+                <a href="?page=about" class="text-center border border-white px-6 py-3 rounded-lg hover:bg-white hover:text-blue-700 transition"> Pelajari Lebih Lanjut </a>
+            </div>
+        </div>
+     </div>
+
+     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-10">
+        <div class="grid grid-cols-2 lg:grid-cols-4 gap-5 mt-12">
+            <div class="bg-white rounded-xl shadow-md p-6 text-center">
+                <h2 class="text-2xl md:text-3xl font-bold text-blue-600">100+</h2>
+                <p class="mt-2 text-sm md:text-base text-gray-600">Data Pegawai</p>
+            </div>
+            <div class="bg-white rounded-xl shadow-md p-6 text-center">
+                <h2 class="text-2xl md:text-3xl font-bold text-green-600">10</h2>
+                <p class="mt-2 text-sm md:text-base text-gray-600">Divisi</p>
+            </div>
+            <div class="bg-white rounded-xl shadow-md p-6 text-center">
+                <h2 class="text-2xl md:text-3xl font-bold text-orange-500">20</h2>
+                <p class="mt-2 text-sm md:text-base text-gray-600">Jabatan</p>
+            </div>
+            <div class="bg-white rounded-xl shadow-md p-6 text-center">
+                <h2 class="text-2xl md:text-3xl font-bold text-red-500">95%</h2>
+                <p class="mt-2 text-sm md:text-base text-gray-600">Kehadiran</p>
+            </div>
         </div>
     </div>
-    <div class="grid grid-cols-2 lg:grid-cols-4 gap-5 mt-12">
-        <div class="bg-white rounded-xl shadow-md p-6 text-center">
-            <h2 class="text-2xl md:text-3xl font-bold text-blue-600">100+</h2>
-            <p class="mt-2 text-sm md:text-base text-gray-600">Data Pegawai</p>
-        </div>
-        <div class="bg-white rounded-xl shadow-md p-6 text-center">
-            <h2 class="text-2xl md:text-3xl font-bold text-green-600">10</h2>
-            <p class="mt-2 text-sm md:text-base text-gray-600">Divisi</p>
-        </div>
-        <div class="bg-white rounded-xl shadow-md p-6 text-center">
-            <h2 class="text-2xl md:text-3xl font-bold text-orange-500">20</h2>
-            <p class="mt-2 text-sm md:text-base text-gray-600">Jabatan</p>
-        </div>
-        <div class="bg-white rounded-xl shadow-md p-6 text-center">
-            <h2 class="text-2xl md:text-3xl font-bold text-red-500">95%</h2>
-            <p class="mt-2 text-sm md:text-base text-gray-600">Kehadiran</p>
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-10">
+        <div class="mt-12 rounded-2xl overflow-hidden shadow-xl">
+            <video class="w-full aspect-video object-cover" controls>
+                <source src="/Sistem-Info-Kepegawaian/frontend/assets/images/Kerja_Kantor_Outdoor.mp4" type="video/mp4">
+                Browser Anda tidak mendukung video HTML.
+            </video>
         </div>
     </div>
     <section class="mt-16">

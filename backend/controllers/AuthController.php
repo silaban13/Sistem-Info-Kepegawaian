@@ -50,6 +50,7 @@ class AuthController
 
         $_SESSION['id_pegawai'] = $user['id_pegawai'];
         $_SESSION['nama'] = $user['nama'];
+        $_SESSION['foto'] = $user['foto'];
 
         if ($user['role'] == 'admin') {
             header("Location: index.php?page=dashboard");
@@ -80,7 +81,6 @@ class AuthController
         $hashPassword,
         $role
     );
-
 
     if($result){
 

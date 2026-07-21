@@ -14,7 +14,7 @@ class AbsensiModel
 
     public function getAll()
     {
-        $sql = "SELECT * FROM absensi ORDER BY id DESC";
+        $sql = "SELECT a.id, a.id_pegawai, p.nama, p.email, a.tanggal, a.jam_masuk, a.jam_keluar, a.status, a.created_at FROM absensi a JOIN pegawai p ON a.id_pegawai = p.id ORDER BY a.id DESC";
         return $this->conn->query($sql);
     }
 
@@ -34,6 +34,15 @@ class AbsensiModel
         $stmt->bind_param("i", $idPegawai);
         $stmt->execute();
         return $stmt->get_result();
+    }
+
+    public function sedangCuti($idPegawai, $tanggal)
+    {
+        $sql = "SELECT id FROM cuti WHERE id_pegawai = ? AND status = 'Disetujui' AND ? BETWEEN tanggal_mulai AND tanggal_selesai";
+        $stmt = $this->conn->prepare($sql);
+        $stmt->bind_param("is", $idPegawai, $tanggal);
+        $stmt->execute();
+        return $stmt->get_result()->num_rows > 0;
     }
 
     public function create($idPegawai, $tanggal, $jamMasuk, $jamKeluar, $status)

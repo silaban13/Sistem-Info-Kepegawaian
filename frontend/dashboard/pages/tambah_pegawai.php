@@ -7,13 +7,8 @@
         <form id="formPegawai" enctype="multipart/form-data">
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                 <div>
-                    <label class="block mb-2 font-medium text-gray-700"> NIP </label>
-                    <div id="message"></div>
-                    <input type="text" name="nip" class="w-full border rounded-lg px-4 py-3 focus:ring-2 focus:ring-blue-500 outline-none" placeholder="Masukkan NIP">
-                </div>
-                <div>
                     <label class="block mb-2 font-medium text-gray-700"> Nama Pegawai </label>
-                    <input type="text" name="nama" class="w-full border rounded-lg px-4 py-3 focus:ring-2 focus:ring-blue-500 outline-none" placeholder="Masukkan Nama">
+                    <input type="text" name="nama" required minlength="3" maxlength="100" autocomplete="name" class="w-full border rounded-lg px-4 py-3 focus:ring-2 focus:ring-blue-500 outline-none" placeholder="Masukkan Nama">
                 </div>
                 <div>
                     <label class="block mb-2 font-medium text-gray-700"> Jenis Kelamin </label>
@@ -24,33 +19,25 @@
                     </select>
                 </div>
                 <div>
-                    <label class="block mb-2 font-medium text-gray-700"> Tanggal Lahir </label>
-                    <input type="date" name="tanggal_lahir" class="w-full border rounded-lg px-4 py-3">
-                </div>
-                <div>
                     <label class="block mb-2 font-medium text-gray-700"> Email </label>
-                    <input type="email" name="email" class="w-full border rounded-lg px-4 py-3" placeholder="pegawai@email.com">
+                    <input type="email" name="email" required maxlength="100" autocomplete="email" class="w-full border rounded-lg px-4 py-3" placeholder="pegawai@email.com">
                 </div>
                 <div>
                     <label class="block mb-2 font-medium text-gray-700"> Nomor HP </label>
-                    <input type="text" name="no_hp" class="w-full border rounded-lg px-4 py-3" placeholder="08xxxxxxxxxx">
+                    <input type="tel" name="no_hp" required pattern="^08[0-9]{8,11}$" maxlength="13" class="w-full border rounded-lg px-4 py-3" placeholder="08xxxxxxxxxx">
                 </div>
                 <div>
                     <label class="block mb-2 font-medium text-gray-700"> Divisi </label>
-                     <select id="id_divisi" name="id_divisi" class="w-full border rounded-lg px-4 py-3"> 
+                    <select id="id_divisi" name="id_divisi" class="w-full border rounded-lg px-4 py-3"> 
                         <option value="">Pilih Divisi</option>
                     </select>
                 </div>
-
                 <div>
                     <label class="block mb-2 font-medium text-gray-700"> Jabatan </label>
                     <select id="id_jabatan" name="id_jabatan" class="w-full border rounded-lg px-4 py-3">
                         <option value="">Pilih Jabatan</option>
                     </select>
-
-
                 </div>
-
                 <div>
                     <label class="block mb-2 font-medium text-gray-700"> Status </label>
                     <select name="status" class="w-full border rounded-lg px-4 py-3">
@@ -59,12 +46,10 @@
                         <option value="Nonaktif">Nonaktif</option>
                     </select>
                 </div>
-
-
             </div>
             <div class="mt-6">
                 <label class="block mb-2 font-medium text-gray-700"> Alamat </label>
-                <textarea name="alamat" rows="4" class="w-full border rounded-lg px-4 py-3 resize-none" placeholder="Masukkan alamat lengkap"></textarea>
+                <textarea name="alamat" required maxlength="255" rows="4" class="w-full border rounded-lg px-4 py-3 resize-none" placeholder="Masukkan alamat lengkap"></textarea>
             </div>
             <div class="mt-6">
                 <label class="block mb-2 font-medium text-gray-700"> Foto Pegawai </label>
@@ -75,7 +60,7 @@
                 <button type="submit" class="px-6 py-3 rounded-lg bg-blue-600 text-white hover:bg-blue-700"> Simpan Data </button>
             </div>
         </form>
+        <div id="toast" class="fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 hidden z-50 px-6 py-4 rounded-xl shadow-2xl text-white font-medium transition-all duration-300 pointer-events-none"></div>
     </div>
 </div>
-
 <script src="frontend/assets/js/pegawai_create.js"></script>

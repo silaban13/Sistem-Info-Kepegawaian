@@ -1,7 +1,8 @@
 <?php
 
-require_once "Router.php";
+session_start();
 
+require_once "Router.php";
 $router = new Router();
 require_once "../controllers/AuthController.php";
 require_once "../controllers/UserController.php";
@@ -55,11 +56,9 @@ $router->put("cuti/status", [CutiController::class, "updateStatus"]);
 require_once __DIR__ . "/../controllers/ProfileController.php";
 
 $router->get("dashboard", [DashboardController::class, "index"]);
-
 $router->get("search", [SearchController::class, "search"]);
-
 $router->get("profile", [ProfileController::class, "index"]);
 
-
+$router->put("cuti/cancel", [CutiController::class, "cancel"]);
 
 $router->run();

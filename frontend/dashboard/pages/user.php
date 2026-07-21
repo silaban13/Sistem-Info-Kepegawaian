@@ -30,9 +30,9 @@
     <?php if($_SESSION['role'] == 'admin'): ?>
 
         <div class="flex justify-between items-center">
-        <h2 class="text-xl font-semibold text-gray-700"> Daftar User </h2>
-        <a href="?page=tambah_user" class="bg-blue-600 text-white px-5 py-2 rounded-lg hover:bg-blue-700"> + Tambah User </a>
-    </div>
+            <h2 class="text-xl font-semibold text-gray-700"> Daftar User </h2>
+            <a href="?page=tambah_user" class="bg-blue-600 text-white px-5 py-2 rounded-lg hover:bg-blue-700"> + Tambah User </a>
+        </div>
 
     <?php endif; ?>
 
@@ -78,24 +78,20 @@
                             <span class="bg-green-100 text-green-700 px-3 py-1 rounded-full text-sm">  Aktif </span>
                         </td>
                         <td class="px-6 py-4">
-                           
-
                             <?php if($_SESSION['role'] == 'admin'): ?>
-
-                         <div class="flex items-center gap-4">
-                                <a href="?page=edit_user&id=<?= $user['id'] ?>" class="text-blue-600 hover:text-blue-800 font-medium"> Edit </a>
-                                <a href="?page=hapus_user&id=<?= $user['id'] ?>" onclick="return confirm('Yakin ingin menghapus user ini?')" class="text-red-600 hover:text-red-800 font-medium"> Hapus </a>
-                            </div>
-
-        <?php else: ?>
-
-        <span class="text-gray-400">
-            Read Only
-        </span>
-
-        <?php endif; ?>
-
-
+                                <div class="flex flex-col sm:flex-row gap-2">
+                                    <a href="?page=edit_user&id=<?= $user['id'] ?>" class="inline-flex items-center justify-center gap-2 bg-blue-500 hover:bg-blue-600 text-white px-3 py-2 rounded-lg transition">
+                                        <img src="frontend/assets/images/edit.png" class="w-4 h-4" alt="Edit">
+                                        <span>Edit</span>
+                                    </a>
+                                    <a href="?page=hapus_user&id=<?= $user['id'] ?>" onclick="return confirm('Yakin ingin menghapus user ini?')" class="inline-flex items-center justify-center gap-2 bg-red-500 hover:bg-red-600 text-white px-3 py-2 rounded-lg transition">
+                                        <img src="frontend/assets/images/delet.png" class="w-4 h-4" alt="Hapus">
+                                        <span>Hapus</span>
+                                    </a>
+                                </div>
+                            <?php else: ?>
+                                <span class="text-gray-400"> Read Only </span>
+                            <?php endif; ?>
                         </td>
                     </tr>
                 <?php endforeach; ?>

@@ -5,20 +5,15 @@ require_once __DIR__ . '/../models/CutiModel.php';
 class CutiController
 {
     private $model;
-
     public function __construct()
     {
         $this->model = new CutiModel();
     }
 
-
-    // GET semua cuti
     public function index()
     {
         $result = $this->model->getAll();
-
         $data = [];
-
         while ($row = $result->fetch_assoc()) {
             $data[] = $row;
         }
@@ -29,8 +24,6 @@ class CutiController
         ]);
     }
 
-
-    // POST tambah cuti
     public function store()
     {
         $input = json_decode(file_get_contents("php://input"), true);
@@ -39,8 +32,10 @@ class CutiController
         $tanggal_mulai = $input['tanggal_mulai'];
         $tanggal_selesai = $input['tanggal_selesai'];
         $alasan = $input['alasan'];
-        $status = $input['status'] ?? "Pending";
-
+        $status = trim($input['status'] ?? '');
+        if ($status === '') {
+            $status = 'Pending';
+        }
 
         $result = $this->model->create(
             $id_pegawai,
@@ -50,7 +45,6 @@ class CutiController
             $status
         );
 
-
         echo json_encode([
             "status" => $result,
             "message" => $result 
@@ -59,22 +53,14 @@ class CutiController
         ]);
     }
 
-    
-
-
-
-    // PUT update cuti
     public function update()
     {
         $input = json_decode(file_get_contents("php://input"), true);
-
-
         $id = $input['id'];
         $tanggal_mulai = $input['tanggal_mulai'];
         $tanggal_selesai = $input['tanggal_selesai'];
         $alasan = $input['alasan'];
         $status = $input['status'];
-
 
         $result = $this->model->update(
             $id,
@@ -93,19 +79,11 @@ class CutiController
         ]);
     }
 
-
-
-    // DELETE hapus cuti
     public function destroy()
     {
         $input = json_decode(file_get_contents("php://input"), true);
-
         $id = $input['id'];
-
-
         $result = $this->model->delete($id);
-
-
         echo json_encode([
             "status" => $result,
             "message" => $result
@@ -114,8 +92,6 @@ class CutiController
         ]);
     }
 
-
-    // GET cuti berdasarkan pegawai
     public function pegawai($id_pegawai)
     {
         $result = $this->model->getByPegawai($id_pegawai);
@@ -168,5 +144,22 @@ public function updateStatus()
     ]);
 }
 
+
+public function cancel()
+{
+    $input = json_decode(file_get_contents("php://input"), true);
+
+    $id = $input["id"];
+    $id_pegawai = $_SESSION['id_pegawai'];
+
+    $result = $this->model->cancel($id, $id_pegawai);
+
+    echo json_encode([
+        "status" => $result,
+        "message" => $result
+            ? "Pengajuan cuti berhasil dibatalkan"
+            : "Gagal membatalkan pengajuan cuti"
+    ]);
+}
 
 }

@@ -14,7 +14,6 @@ class AbsensiController
     {
         $result = $this->model->getAll();
         $absensi = [];
-
         while ($row = $result->fetch_assoc()) {
             $absensi[] = $row;
         }
@@ -29,10 +28,8 @@ class AbsensiController
     public function show($id)
     {
         $absensi = $this->model->getById($id);
-
         if (!$absensi) {
             http_response_code(404);
-
             echo json_encode([
                 "status" => false,
                 "message" => "Data absensi tidak ditemukan"
@@ -62,7 +59,6 @@ class AbsensiController
             empty($status)
         ) {
             http_response_code(400);
-
             echo json_encode([
                 "status" => false,
                 "message" => "Semua field wajib diisi."
@@ -71,14 +67,15 @@ class AbsensiController
             return;
         }
 
-        $this->model->create(
-            $idPegawai,
-            $tanggal,
-            $jamMasuk,
-            $jamKeluar,
-            $status
-        );
+        if ($this->model->sedangCuti($idPegawai, $tanggal)) {
+            echo json_encode([
+                "status" => false,
+                "message" => "Pegawai sedang cuti dan tidak dapat melakukan absensi."
+            ]);
+            return;
+        }
 
+        $this->model->create($idPegawai, $tanggal, $jamMasuk, $jamKeluar, $status);
         echo json_encode([
             "status" => true,
             "message" => "Data absensi berhasil ditambahkan"
@@ -97,7 +94,6 @@ class AbsensiController
 
         if (empty($id)) {
             http_response_code(400);
-
             echo json_encode([
                 "status" => false,
                 "message" => "ID wajib diisi"
@@ -106,14 +102,7 @@ class AbsensiController
             return;
         }
 
-        $this->model->update(
-            $id,
-            $tanggal,
-            $jamMasuk,
-            $jamKeluar,
-            $status
-        );
-
+        $this->model->update($id, $tanggal, $jamMasuk, $jamKeluar, $status);
         echo json_encode([
             "status" => true,
             "message" => "Data absensi berhasil diperbarui"

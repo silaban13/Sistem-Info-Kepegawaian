@@ -18,7 +18,7 @@
             <thead class="bg-gray-100">
                 <tr>
                     <th class="px-6 py-3">No</th>
-                    <th class="px-6 py-3">ID Pegawai</th>
+                    <th class="px-6 py-3">Nama Pegawai</th>
                     <th class="px-6 py-3">Tanggal</th>
                     <th class="px-6 py-3">Jam Masuk</th>
                     <th class="px-6 py-3">Jam Keluar</th>

@@ -12,13 +12,24 @@ class CutiModel
         $this->conn = $database->conn;
     }
 
-    public function getAll()
+
+      public function getAll()
     {
-        $sql = "SELECT * FROM cuti ORDER BY created_at DESC";
+        $sql = "
+            SELECT
+                cuti.*,
+                pegawai.nama
+            FROM cuti
+            INNER JOIN pegawai
+                ON cuti.id_pegawai = pegawai.id
+            ORDER BY cuti.created_at DESC
+        ";
+
         $result = $this->conn->query($sql);
 
         return $result;
     }
+
 
     public function getById($id)
     {
@@ -83,20 +94,28 @@ class CutiModel
         return $stmt->execute();
     }
 
-    public function getByPegawai($id_pegawai)
-    {
-        $sql = "SELECT * FROM cuti
-                WHERE id_pegawai = ?
-                ORDER BY created_at DESC";
 
-        $stmt = $this->conn->prepare($sql);
 
-        $stmt->bind_param("i", $id_pegawai);
+   public function getByPegawai($id_pegawai)
+{
+    $sql = "
+        SELECT
+            cuti.*,
+            pegawai.nama
+        FROM cuti
+        INNER JOIN pegawai
+            ON cuti.id_pegawai = pegawai.id
+        WHERE cuti.id_pegawai = ?
+        ORDER BY cuti.created_at DESC
+    ";
 
-        $stmt->execute();
+    $stmt = $this->conn->prepare($sql);
+    $stmt->bind_param("i", $id_pegawai);
+    $stmt->execute();
 
-        return $stmt->get_result();
-    }
+    return $stmt->get_result();
+}
+
 
    public function updateStatus($id, $status)
 {
@@ -119,4 +138,25 @@ class CutiModel
     return $stmt->execute();
 }
 
+
+public function cancel($id, $id_pegawai)
+{
+    $sql = "
+        UPDATE cuti
+        SET status = 'Dibatalkan'
+        WHERE id = ?
+        AND id_pegawai = ?
+        AND status = 'Pending'
+    ";
+
+    $stmt = $this->conn->prepare($sql);
+
+    $stmt->bind_param(
+        "ii",
+        $id,
+        $id_pegawai
+    );
+
+    return $stmt->execute();
+}
 }

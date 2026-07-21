@@ -4,14 +4,17 @@ class ProfileController
 {
     public function index()
     {
-        session_start();
+        if (session_status() === PHP_SESSION_NONE) {
+            session_start();
+        }
 
         echo json_encode([
             "status" => true,
             "data" => [
-                "nama" => $_SESSION['nama'] ?? $_SESSION['username'] ?? null,
+                "nama"       => $_SESSION['nama'] ?? $_SESSION['username'] ?? null,
                 "id_pegawai" => $_SESSION['id_pegawai'] ?? null,
-                "role" => $_SESSION['role'] ?? null
+                "role"       => $_SESSION['role'] ?? null,
+                "foto"       => $_SESSION['foto'] ?? null
             ]
         ]);
     }

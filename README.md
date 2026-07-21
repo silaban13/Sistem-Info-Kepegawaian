@@ -7,3 +7,5 @@ Kelompok 1 : Sistem Informasi Kepegawaian
 `npm install`
 
 ### npx tailwindcss -i ./src/input.css -o ./dist/style.css --watch
+
+### ALTER TABLE pegawai ADD CONSTRAINT unique_email UNIQUE (email);

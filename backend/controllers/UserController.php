@@ -25,6 +25,20 @@ class UserController
         ]);
     }
 
+    public function available()
+    {
+        $result = $this->model->getAvailableUsers();
+        $users = [];
+        while ($row = $result->fetch_assoc()) {
+            $users[] = $row;
+        }
+
+        echo json_encode([
+            "status" => true,
+            "data" => $users
+        ]);
+    }
+
     public function show($id)
     {
         $user = $this->model->getById($id);
@@ -100,49 +114,39 @@ class UserController
     }
 
 
-   public function prosesEdit()
-{
-    $id       = $_POST['id'];
-    $username = $_POST['username'];
-    $role     = $_POST['role'];
+    public function prosesEdit()
+    {
+        $id       = $_POST['id'];
+        $username = $_POST['username'];
+        $role     = $_POST['role'];
 
-    // Kirim ke API menggunakan cURL
-    $data = http_build_query([
-        "id" => $id,
-        "username" => $username,
-        "role" => $role
-    ]);
+        $data = http_build_query([
+            "id" => $id,
+            "username" => $username,
+            "role" => $role
+        ]);
 
-    $ch = curl_init("http://localhost:8080/Sistem-Info-Kepegawaian/backend/api/index.php?route=users");
+        $ch = curl_init("http://localhost:8080/Sistem-Info-Kepegawaian/backend/api/index.php?route=users");
+        curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "PUT");
+        curl_setopt($ch, CURLOPT_POSTFIELDS, $data);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        curl_exec($ch);
+        curl_close($ch);
+        header("Location: index.php?page=user");
+        exit;
+    }
 
-    curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "PUT");
-    curl_setopt($ch, CURLOPT_POSTFIELDS, $data);
-    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-
-    curl_exec($ch);
-    curl_close($ch);
-
-    header("Location: index.php?page=user");
-    exit;
-}
-
-public function prosesHapus()
-{
-    $id = $_GET['id'];
-
-    $ch = curl_init(
-        "http://localhost:8080/Sistem-Info-Kepegawaian/backend/api/index.php?route=users&id=$id"
-    );
-
-    curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "DELETE");
-    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-
-    $response = curl_exec($ch);
-    curl_close($ch);
-
-    header("Location: index.php?page=user");
-    exit;
-}
+    public function prosesHapus()
+    {
+        $id = $_GET['id'];
+        $ch = curl_init("http://localhost:8080/Sistem-Info-Kepegawaian/backend/api/index.php?route=users&id=$id");
+        curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "DELETE");
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        $response = curl_exec($ch);
+        curl_close($ch);
+        header("Location: index.php?page=user");
+        exit;
+    }
 
 
     public function updatePassword()
@@ -167,32 +171,27 @@ public function prosesHapus()
     }
 
 
-   public function prosesTambah()
-{
-    $username = $_POST['username'];
-    $password = $_POST['password'];
-    $role     = $_POST['role'];
+    public function prosesTambah()
+    {
+        $username = $_POST['username'];
+        $password = $_POST['password'];
+        $role     = $_POST['role'];
 
-    $data = http_build_query([
-        "username" => $username,
-        "password" => $password,
-        "role"     => $role
-    ]);
+        $data = http_build_query([
+            "username" => $username,
+            "password" => $password,
+            "role"     => $role
+        ]);
 
-    $ch = curl_init("http://localhost:8080/Sistem-Info-Kepegawaian/backend/api/index.php?route=register");
+        $ch = curl_init("http://localhost:8080/Sistem-Info-Kepegawaian/backend/api/index.php?route=register");
+        curl_setopt($ch, CURLOPT_POST, true);
+        curl_setopt($ch, CURLOPT_POSTFIELDS, $data);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
 
-    curl_setopt($ch, CURLOPT_POST, true);
-    curl_setopt($ch, CURLOPT_POSTFIELDS, $data);
-    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-
-    curl_exec($ch);
-    curl_close($ch);
-
-    header("Location: index.php?page=user");
-    exit;
-}
-
-
-
+        curl_exec($ch);
+        curl_close($ch);
+        header("Location: index.php?page=user");
+        exit;
+    }
 
 }

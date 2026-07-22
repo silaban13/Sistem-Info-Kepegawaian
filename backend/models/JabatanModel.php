@@ -13,29 +13,15 @@ class JabatanModel
     }
 
     public function getAll()
-{
-    $sql = "
-        SELECT 
-            jabatan.*,
-            COUNT(pegawai.id) AS jumlah_pegawai
+    {
+        $sql = "SELECT jabatan.*, COUNT(pegawai.id) AS jumlah_pegawai FROM jabatan LEFT JOIN pegawai ON jabatan.id = pegawai.id_jabatan GROUP BY jabatan.id ORDER BY jabatan.id DESC";
 
-        FROM jabatan
-
-        LEFT JOIN pegawai
-        ON jabatan.id = pegawai.id_jabatan
-
-        GROUP BY jabatan.id
-
-        ORDER BY jabatan.id DESC
-    ";
-
-    return $this->conn->query($sql);
-}
+        return $this->conn->query($sql);
+    }
 
     public function getById($id)
     {
         $sql = "SELECT * FROM jabatan WHERE id = ?";
-
         $stmt = $this->conn->prepare($sql);
         $stmt->bind_param("i", $id);
         $stmt->execute();
@@ -46,7 +32,6 @@ class JabatanModel
     public function create($namaJabatan, $gajiPokok)
     {
         $sql = "INSERT INTO jabatan (nama_jabatan, gaji_pokok) VALUES (?, ?)";
-
         $stmt = $this->conn->prepare($sql);
         $stmt->bind_param("sd", $namaJabatan, $gajiPokok);
 
@@ -55,11 +40,7 @@ class JabatanModel
 
     public function update($id, $namaJabatan, $gajiPokok)
     {
-        $sql = "UPDATE jabatan
-                SET nama_jabatan = ?,
-                    gaji_pokok = ?
-                WHERE id = ?";
-
+        $sql = "UPDATE jabatan SET nama_jabatan = ?, gaji_pokok = ? WHERE id = ?";
         $stmt = $this->conn->prepare($sql);
         $stmt->bind_param("sdi", $namaJabatan, $gajiPokok, $id);
 
@@ -67,34 +48,23 @@ class JabatanModel
     }
 
     public function delete($id)
-{
+    {
+        $cek = $this->conn->prepare("SELECT id FROM pegawai WHERE id_jabatan = ?");
+        $cek->bind_param("i", $id);
+        $cek->execute();
 
-    // cek apakah masih digunakan pegawai
-    $cek = $this->conn->prepare(
-        "SELECT id FROM pegawai WHERE id_jabatan = ?"
-    );
+        $result = $cek->get_result();
 
-    $cek->bind_param("i", $id);
-    $cek->execute();
+        if($result->num_rows > 0){
 
-    $result = $cek->get_result();
+            return "used";
 
+        }
 
-    if($result->num_rows > 0){
-
-        return "used";
+        $sql = "DELETE FROM jabatan WHERE id = ?";
+        $stmt = $this->conn->prepare($sql);
+        $stmt->bind_param("i",$id);
+        return $stmt->execute();
 
     }
-
-
-    $sql = "DELETE FROM jabatan WHERE id = ?";
-
-    $stmt = $this->conn->prepare($sql);
-
-    $stmt->bind_param("i",$id);
-
-
-    return $stmt->execute();
-
-}
 }

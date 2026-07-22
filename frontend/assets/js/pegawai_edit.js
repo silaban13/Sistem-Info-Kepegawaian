@@ -1,3 +1,5 @@
+const API = "http://localhost:8080/Sistem-Info-Kepegawaian/backend/api/index.php?route=";
+
 const params = new URLSearchParams(window.location.search);
 const id = params.get("id");
 
@@ -12,6 +14,9 @@ fetch(`${API}pegawai/show&id=${id}`)
     document.getElementById("status").value = data.status;
     document.getElementById("alamat").value = data.alamat;
     document.getElementById("jenis_kelamin").value = data.jenis_kelamin;
+
+    document.getElementById("previewFoto").src = "/Sistem-Info-Kepegawaian/frontend/assets/uploads/" + data.foto;
+
     loadDivisi(data.id_divisi);
     loadJabatan(data.id_jabatan);
 });
@@ -19,22 +24,29 @@ fetch(`${API}pegawai/show&id=${id}`)
 document.getElementById("formEditPegawai")
 .addEventListener("submit",function(e){
     e.preventDefault();
-    const data = new URLSearchParams({
-        id: document.getElementById("id").value,
-        nama: document.getElementById("nama").value,
-        jenis_kelamin: document.getElementById("jenis_kelamin").value,
-        alamat: document.getElementById("alamat").value,
-        email: document.getElementById("email").value,
-        no_hp: document.getElementById("no_hp").value,
-        status: document.getElementById("status").value,
-        id_divisi: document.getElementById("id_divisi").value,
-        id_jabatan: document.getElementById("id_jabatan").value
-    });
 
-    fetch(API + "pegawai", {
-        method: "PUT",
-        body: data
-    })
+   const formData = new FormData();
+
+formData.append("id", document.getElementById("id").value);
+formData.append("nama", document.getElementById("nama").value);
+formData.append("jenis_kelamin", document.getElementById("jenis_kelamin").value);
+formData.append("alamat", document.getElementById("alamat").value);
+formData.append("email", document.getElementById("email").value);
+formData.append("no_hp", document.getElementById("no_hp").value);
+formData.append("status", document.getElementById("status").value);
+formData.append("id_divisi", document.getElementById("id_divisi").value);
+formData.append("id_jabatan", document.getElementById("id_jabatan").value);
+
+const foto = document.getElementById("foto").files[0];
+
+if (foto) {
+    formData.append("foto", foto);
+}
+
+fetch(API + "pegawai/update", {
+    method: "POST",
+    body: formData
+})
 
     .then(res => res.json())
     .then(result => {
@@ -52,29 +64,57 @@ document.getElementById("formEditPegawai")
 });
 
 async function loadDivisi(selected = "") {
-    const result = await getData("divisi");
+
+    const response = await fetch(API + "divisi");
+    const result = await response.json();
+
     const select = document.getElementById("id_divisi");
+
     select.innerHTML = '<option value="">Pilih Divisi</option>';
+
     result.data.forEach(divisi => {
-        const option = document.createElement("option");
-        option.value = divisi.id;
-        option.textContent = divisi.nama_divisi;
-        select.appendChild(option);
+        select.innerHTML += `
+            <option value="${divisi.id}">
+                ${divisi.nama_divisi}
+            </option>
+        `;
     });
 
     select.value = selected;
 }
 
 async function loadJabatan(selected = "") {
-    const result = await getData("jabatan");
+
+    const response = await fetch(API + "jabatan");
+    const result = await response.json();
+
     const select = document.getElementById("id_jabatan");
+
     select.innerHTML = '<option value="">Pilih Jabatan</option>';
+
     result.data.forEach(jabatan => {
-        const option = document.createElement("option");
-        option.value = jabatan.id;
-        option.textContent = jabatan.nama_jabatan;
-        select.appendChild(option);
+        select.innerHTML += `
+            <option value="${jabatan.id}">
+                ${jabatan.nama_jabatan}
+            </option>
+        `;
     });
 
     select.value = selected;
 }
+
+document
+.getElementById("foto")
+.addEventListener("change", function(){
+
+    const file = this.files[0];
+
+    if(file){
+
+        document
+        .getElementById("previewFoto")
+        .src = URL.createObjectURL(file);
+
+    }
+
+});

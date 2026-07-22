@@ -57,7 +57,6 @@ class SearchModel
             }
         }
 
-
         return $result;
     }
 }

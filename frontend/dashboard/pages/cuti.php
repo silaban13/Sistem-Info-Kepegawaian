@@ -60,13 +60,13 @@
             </table>
         </div>
     </div>
-    <div id="modalAlasan" class="hidden fixed inset-0 bg-black/50 flex items-center justify-center z-50">
-        <div class="bg-white rounded-xl shadow-lg w-full max-w-lg p-6">
-            <div class="flex justify-between items-center mb-4">
-                <h2 class="text-xl font-semibold"> Detail Alasan Cuti </h2>
-                <button onclick="tutupAlasan()" class="text-gray-500 hover:text-red-500 text-2xl"> &times; </button>
+    <div id="modalAlasan" class="hidden fixed inset-0 z-50 bg-black/50 flex items-center justify-center p-4">
+        <div class="bg-white rounded-xl shadow-lg w-full max-w-sm md:max-w-lg lg:max-w-2xl max-h-[90vh] overflow-y-auto">
+            <div class="flex justify-between items-center p-6 border-b">
+                <h2 class="text-lg md:text-xl font-semibold"> Detail Alasan Cuti </h2>
+                <button onclick="tutupAlasan()" class="text-gray-500 hover:text-red-500 text-3xl leading-none"> &times; </button>
             </div>
-            <div id="isiAlasan" class="bg-gray-50 rounded-lg p-4 text-gray-700 leading-7 whitespace-pre-line"></div>
+            <div id="isiAlasan" class="p-6 text-gray-700 leading-7 whitespace-pre-line break-words"></div>
         </div>
     </div>
 </div>

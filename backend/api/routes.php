@@ -14,15 +14,17 @@ require_once __DIR__ . "/../controllers/CutiController.php";
 require_once __DIR__ . "/../controllers/DashboardController.php";
 require_once __DIR__ . "/../controllers/SearchController.php";
 require_once __DIR__ . "/../middleware/AuthMiddleware.php";
+require_once __DIR__ . "/../controllers/NotifikasiController.php";
+require_once __DIR__ . "/../controllers/ProfileController.php";
 
 $router->post("login", [AuthController::class, "login"]);
 
 $router->get("users", [UserController::class, "index"]);
+$router->get("users/available", [UserController::class, "available"]);
 $router->get("users/show", [UserController::class, "show"]);
 $router->post("register", [UserController::class, "store"]);
 $router->put("users", [UserController::class, "update"]);
 $router->delete("users", [UserController::class, "destroy"]);
-
 
 $router->get("absensi", [AbsensiController::class, "index"]);
 $router->get("absensi/show", [AbsensiController::class, "show"]);
@@ -45,6 +47,9 @@ $router->delete("jabatan", [JabatanController::class, "destroy"]);
 $router->get("pegawai", [PegawaiController::class, "index"]);
 $router->get("pegawai/show", [PegawaiController::class, "show"]);
 $router->post("pegawai", [PegawaiController::class, "store"]);
+
+$router->post("pegawai/update", [PegawaiController::class, "update"]);
+
 $router->put("pegawai", [PegawaiController::class, "update"]);
 $router->delete("pegawai", [PegawaiController::class, "destroy"]);
 
@@ -53,12 +58,15 @@ $router->post("cuti", [CutiController::class, "store"]);
 $router->put("cuti", [CutiController::class, "update"]);
 $router->delete("cuti", [CutiController::class, "destroy"]);
 $router->put("cuti/status", [CutiController::class, "updateStatus"]);
-require_once __DIR__ . "/../controllers/ProfileController.php";
 
 $router->get("dashboard", [DashboardController::class, "index"]);
 $router->get("search", [SearchController::class, "search"]);
 $router->get("profile", [ProfileController::class, "index"]);
 
 $router->put("cuti/cancel", [CutiController::class, "cancel"]);
+
+$router->get("notifikasi", [NotifikasiController::class, "index"]);
+$router->put("notifikasi/read", [NotifikasiController::class, "readAll"]);
+$router->delete("notifikasi", [NotifikasiController::class, "destroy"]);
 
 $router->run();

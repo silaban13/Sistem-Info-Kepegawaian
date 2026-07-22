@@ -1,6 +1,7 @@
 document.addEventListener("DOMContentLoaded", function(){
     loadDivisi();
     loadJabatan();
+    loadUsers();
 
 });
 
@@ -120,4 +121,28 @@ function showAlert(message, type = "success") {
     setTimeout(() => {
         toast.classList.add("hidden");
     }, 2000);
+}
+
+async function loadUsers() {
+
+    const response = await fetch(
+        "http://localhost:8080/Sistem-Info-Kepegawaian/backend/api/index.php?route=users/available"
+    );
+
+    const result = await response.json();
+
+    const select = document.getElementById("id_user");
+
+    select.innerHTML = '<option value="">Pilih User</option>';
+
+    result.data.forEach(user => {
+
+        select.innerHTML += `
+            <option value="${user.id}">
+                ${user.username}
+            </option>
+        `;
+
+    });
+
 }

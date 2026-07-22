@@ -17,6 +17,12 @@ class UserModel
         return $this->conn->query($sql);
     }
 
+    public function getAvailableUsers()
+    {
+        $sql = "SELECT id, username FROM users WHERE role = 'pegawai' AND id NOT IN ( SELECT id_user FROM pegawai WHERE id_user IS NOT NULL ) ORDER BY username ASC";
+        return $this->conn->query($sql);
+    }
+
     public function getById($id)
     {
         $sql = "SELECT id, username, role, created_at, updated_at FROM users WHERE id = ?";
@@ -40,12 +46,7 @@ class UserModel
         $hashPassword = password_hash($password, PASSWORD_DEFAULT);
         $sql = "INSERT INTO users (username, password, role) VALUES (?, ?, ?)";
         $stmt = $this->conn->prepare($sql);
-        $stmt->bind_param(
-            "sss",
-            $username,
-            $hashPassword,
-            $role
-        );
+        $stmt->bind_param("sss", $username, $hashPassword, $role);
 
         return $stmt->execute();
     }
@@ -54,12 +55,7 @@ class UserModel
     {
         $sql = "UPDATE users SET username = ?, role = ? WHERE id = ?";
         $stmt = $this->conn->prepare($sql);
-        $stmt->bind_param(
-            "ssi",
-            $username,
-            $role,
-            $id
-        );
+        $stmt->bind_param("ssi", $username, $role, $id);
         
         return $stmt->execute();
     }

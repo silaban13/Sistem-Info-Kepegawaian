@@ -21,7 +21,6 @@ class DivisiModel
     public function getById($id)
     {
         $sql = "SELECT * FROM divisi WHERE id = ?";
-
         $stmt = $this->conn->prepare($sql);
         $stmt->bind_param("i", $id);
         $stmt->execute();
@@ -29,56 +28,59 @@ class DivisiModel
         return $stmt->get_result()->fetch_assoc();
     }
 
-    public function create($namaDivisi)
+    public function create($namaDivisi, $deskripsi)
     {
-        $sql = "INSERT INTO divisi (nama_divisi)
-                VALUES (?)";
-
+        $sql = "INSERT INTO divisi (nama_divisi, deskripsi) VALUES (?, ?)";
         $stmt = $this->conn->prepare($sql);
-        $stmt->bind_param("s", $namaDivisi);
+        $stmt->bind_param("ss", $namaDivisi, $deskripsi);
 
         return $stmt->execute();
     }
 
-    public function update($id, $namaDivisi)
+    public function update($id, $namaDivisi, $deskripsi)
     {
-        $sql = "UPDATE divisi SET nama_divisi = ? WHERE id = ?";
+        $sql = " UPDATE divisi SET nama_divisi = ?, deskripsi = ? WHERE id = ? ";
         $stmt = $this->conn->prepare($sql);
-        $stmt->bind_param("si", $namaDivisi, $id);
+        $stmt->bind_param("ssi", $namaDivisi, $deskripsi, $id);
 
         return $stmt->execute();
     }
 
     public function delete($id)
-{
-    // cek apakah divisi masih dipakai pegawai
-    $check = "
-        SELECT COUNT(*) AS total
-        FROM pegawai
-        WHERE id_divisi = ?
-    ";
+    {
+        $check = "SELECT COUNT(*) AS total FROM pegawai WHERE id_divisi = ?";
+        $stmt = $this->conn->prepare($check);
+        $stmt->bind_param("i", $id);
+        $stmt->execute();
+        $result = $stmt->get_result()->fetch_assoc();
 
-    $stmt = $this->conn->prepare($check);
-    $stmt->bind_param("i", $id);
-    $stmt->execute();
+        if ($result['total'] > 0) {
+            return false;
+        }
 
-    $result = $stmt->get_result()->fetch_assoc();
+        $sql = "DELETE FROM divisi WHERE id = ? ";
+        $stmt = $this->conn->prepare($sql);
+        $stmt->bind_param("i", $id);
 
-
-    if ($result['total'] > 0) {
-        return false;
+        return $stmt->execute();
     }
 
+    public function getPagination($limit, $offset)
+    {
+        $sql = "SELECT * FROM divisi ORDER BY id DESC LIMIT ? OFFSET ?";
+        $stmt = $this->conn->prepare($sql);
+        $stmt->bind_param("ii", $limit, $offset);
+        $stmt->execute();
 
-    // hapus jika tidak dipakai
-    $sql = "
-        DELETE FROM divisi
-        WHERE id = ?
-    ";
+        return $stmt->get_result()->fetch_all(MYSQLI_ASSOC);
+    }
 
-    $stmt = $this->conn->prepare($sql);
-    $stmt->bind_param("i", $id);
+    public function countDivisi()
+    {
+        $sql = "SELECT COUNT(*) total FROM divisi";
+        $result = $this->conn->query($sql);
 
-    return $stmt->execute();
-}
+        return $result->fetch_assoc()['total'];
+    }
+
 }

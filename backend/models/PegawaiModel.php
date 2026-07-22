@@ -56,42 +56,30 @@ class PegawaiModel
         return $stmt->execute();
     }
 
-   public function getPagination($limit,$offset)
-{ 
-    $sql="
-        SELECT 
-            p.*,
-            d.nama_divisi,
-            j.nama_jabatan,
-            u.username
-        FROM pegawai p
-        LEFT JOIN divisi d 
-            ON p.id_divisi = d.id
-        LEFT JOIN jabatan j 
-            ON p.id_jabatan = j.id
-        LEFT JOIN users u 
-            ON p.id_user = u.id
-        ORDER BY p.id DESC
-        LIMIT ? OFFSET ?
-    ";
+    public function getPagination($limit,$offset)
+    { 
+        $sql="SELECT p.*, d.nama_divisi, j.nama_jabatan, u.username FROM pegawai p LEFT JOIN divisi d ON p.id_divisi = d.id LEFT JOIN jabatan j ON p.id_jabatan = j.id LEFT JOIN users u ON p.id_user = u.id ORDER BY p.id DESC LIMIT ? OFFSET ?";
+        $stmt=$this->conn->prepare($sql);
+        $stmt->bind_param("ii", $limit, $offset);
+        $stmt->execute();
 
-    $stmt=$this->conn->prepare($sql);
-
-    $stmt->bind_param(
-        "ii",
-        $limit,
-        $offset
-    );
-
-    $stmt->execute();
-
-    return $stmt->get_result()->fetch_all(MYSQLI_ASSOC);
-}
+        return $stmt->get_result()->fetch_all(MYSQLI_ASSOC);
+    }
 
     public function countPegawai(){
         $sql="SELECT COUNT(*) total FROM pegawai";
         $result=$this->conn->query($sql);
         return $result->fetch_assoc()['total'];
+    }
+
+    public function getFoto($id)
+    {
+        $sql = "SELECT foto FROM pegawai WHERE id = ?";
+        $stmt = $this->conn->prepare($sql);
+        $stmt->bind_param("i", $id);
+        $stmt->execute();
+
+        return $stmt->get_result()->fetch_assoc();
     }
 
 }

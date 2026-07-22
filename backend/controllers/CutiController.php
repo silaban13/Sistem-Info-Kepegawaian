@@ -27,7 +27,6 @@ class CutiController
     public function store()
     {
         $input = json_decode(file_get_contents("php://input"), true);
-
         $id_pegawai = $input['id_pegawai'];
         $tanggal_mulai = $input['tanggal_mulai'];
         $tanggal_selesai = $input['tanggal_selesai'];
@@ -37,13 +36,7 @@ class CutiController
             $status = 'Pending';
         }
 
-        $result = $this->model->create(
-            $id_pegawai,
-            $tanggal_mulai,
-            $tanggal_selesai,
-            $alasan,
-            $status
-        );
+        $result = $this->model->create($id_pegawai, $tanggal_mulai, $tanggal_selesai, $alasan, $status);
 
         echo json_encode([
             "status" => $result,
@@ -62,14 +55,7 @@ class CutiController
         $alasan = $input['alasan'];
         $status = $input['status'];
 
-        $result = $this->model->update(
-            $id,
-            $tanggal_mulai,
-            $tanggal_selesai,
-            $alasan,
-            $status
-        );
-
+        $result = $this->model->update($id, $tanggal_mulai, $tanggal_selesai, $alasan, $status);
 
         echo json_encode([
             "status" => $result,
@@ -95,14 +81,10 @@ class CutiController
     public function pegawai($id_pegawai)
     {
         $result = $this->model->getByPegawai($id_pegawai);
-
-
         $data = [];
-
         while ($row = $result->fetch_assoc()) {
             $data[] = $row;
         }
-
 
         echo json_encode([
             "status" => true,
@@ -110,56 +92,45 @@ class CutiController
         ]);
     }
 
-   
-    // UPDATE STATUS CUTI (approve/reject)
-public function updateStatus()
-{
-    $input = json_decode(file_get_contents("php://input"), true);
+    public function updateStatus()
+    {
+        $input = json_decode(file_get_contents("php://input"), true);
+        $id = $input['id'];
+        $status = $input['status'];
 
-    $id = $input['id'];
-    $status = $input['status'];
+        if (!in_array($status, ["Disetujui", "Ditolak"])) {
 
+            http_response_code(400);
+            echo json_encode([
+                "status" => false,
+                "message" => "Status tidak valid"
+            ]);
 
-    if (!in_array($status, ["Disetujui", "Ditolak"])) {
+            return;
+        }
 
-        http_response_code(400);
-
+        $result = $this->model->updateStatus($id, $status);
         echo json_encode([
-            "status" => false,
-            "message" => "Status tidak valid"
+            "status" => $result,
+            "message" => $result
+                ? "Status cuti berhasil diperbarui"
+                : "Gagal memperbarui status"
         ]);
-
-        return;
     }
 
+    public function cancel()
+    {
+        $input = json_decode(file_get_contents("php://input"), true);
+        $id = $input["id"];
+        $id_pegawai = $_SESSION['id_pegawai'];
+        $result = $this->model->cancel($id, $id_pegawai);
 
-    $result = $this->model->updateStatus($id, $status);
-
-
-    echo json_encode([
-        "status" => $result,
-        "message" => $result
-            ? "Status cuti berhasil diperbarui"
-            : "Gagal memperbarui status"
-    ]);
-}
-
-
-public function cancel()
-{
-    $input = json_decode(file_get_contents("php://input"), true);
-
-    $id = $input["id"];
-    $id_pegawai = $_SESSION['id_pegawai'];
-
-    $result = $this->model->cancel($id, $id_pegawai);
-
-    echo json_encode([
-        "status" => $result,
-        "message" => $result
-            ? "Pengajuan cuti berhasil dibatalkan"
-            : "Gagal membatalkan pengajuan cuti"
-    ]);
-}
+        echo json_encode([
+            "status" => $result,
+            "message" => $result
+                ? "Pengajuan cuti berhasil dibatalkan"
+                : "Gagal membatalkan pengajuan cuti"
+        ]);
+    }
 
 }

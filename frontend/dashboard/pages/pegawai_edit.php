@@ -42,10 +42,39 @@
             <option value="Perempuan">Perempuan</option>
         </select>
     </div>
-    <div class="mt-6">
-        <label for="alamat" class="block mb-2 text-sm font-medium text-gray-700"> Alamat </label>
-        <textarea id="alamat" rows="4" class="w-full rounded-lg border border-gray-300 px-4 py-3 resize-none focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500" placeholder="Masukkan alamat pegawai..."></textarea>
-    </div>
+
+<div class="mt-6">
+    <label for="alamat" class="block mb-2 text-sm font-medium text-gray-700"> Alamat </label>
+    <textarea id="alamat" rows="4" class="w-full rounded-lg border border-gray-300 px-4 py-3 resize-none focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500" placeholder="Masukkan alamat pegawai..."></textarea>
+</div>
+
+<div class="mt-6">
+    <label class="block mb-2 font-medium text-gray-700">
+        Foto Saat Ini
+    </label>
+
+    <img
+        id="previewFoto"
+        src="/Sistem-Info-Kepegawaian/frontend/assets/images/bank.png"
+        class="w-32 h-32 object-cover rounded-lg border border-gray-300"
+        alt="Preview Foto"
+    >
+</div>
+
+<div class="mt-6">
+    <label class="block mb-2 font-medium text-gray-700">
+        Ganti Foto
+    </label>
+
+    <input
+        type="file"
+        id="foto"
+        accept="image/*"
+        class="w-full border rounded-lg p-2"
+    >
+</div>
+   
+
     <div class="flex gap-3 mt-6">
         <button type="submit" class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg transition"> Simpa </button>
         <button type="button" onclick="window.location.href='index.php?page=pegawai'" class="bg-gray-500 hover:bg-gray-600 text-white px-4 py-2 rounded-lg transition"> Batal </button>

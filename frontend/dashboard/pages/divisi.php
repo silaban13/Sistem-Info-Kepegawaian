@@ -1,7 +1,10 @@
 <?php
-    $json = file_get_contents("http://localhost:8080/Sistem-Info-Kepegawaian/backend/api/index.php?route=divisi");
+    $page = $_GET['halaman'] ?? 1;
+    $json = file_get_contents("http://localhost:8080/Sistem-Info-Kepegawaian/backend/api/index.php?route=divisi&page=$page&limit=4");
     $result = json_decode($json, true);
-    $divisi = $result['data'] ?? [];
+    $divisi = $result['data'];
+    $totalPage = $result['totalPage'];
+    $currentPage = $result['currentPage'];
 ?>
 
 <div class="space-y-6">
@@ -17,7 +20,7 @@
         <?php foreach($divisi as $row): ?>
             <div class="bg-white rounded-xl shadow p-6">
                 <h3 class="text-xl font-semibold text-gray-800"> <?= htmlspecialchars($row['nama_divisi']) ?> </h3>
-                <p class="mt-2 text-gray-600"> Divisi <?= htmlspecialchars($row['nama_divisi']) ?> merupakan salah satu unit kerja yang ada pada perusahaan.</p>
+                <p class="mt-2 text-gray-600"> <?= htmlspecialchars($row['deskripsi'] ?? 'Belum ada deskripsi.') ?></p>
                 <div class="mt-4 text-sm text-gray-500"> ID Divisi : <?= $row['id'] ?> </div>
                 <div class="mt-6 flex gap-3">
                     <a href="?page=edit_divisi&id=<?= $row['id'] ?>" class="px-4 py-2 bg-yellow-500 text-white rounded-lg hover:bg-yellow-600"> Edit </a>
@@ -25,5 +28,16 @@
                 </div>
             </div>
         <?php endforeach; ?>
+    </div>
+    <div class="flex justify-center gap-2 mt-8">
+        <?php if($currentPage > 1): ?>
+            <a href="?page=divisi&halaman=<?= $currentPage-1 ?>" class="px-4 py-2 bg-gray-200 rounded"> ← Prev</a>
+        <?php endif; ?>
+        <?php for($i=1;$i<=$totalPage;$i++): ?>
+            <a href="?page=divisi&halaman=<?= $i ?>" class="px-4 py-2 rounded <?= $i==$currentPage ? 'bg-blue-600 text-white' : 'bg-gray-200' ?>"> <?= $i ?> </a>
+        <?php endfor; ?>
+        <?php if($currentPage < $totalPage): ?>
+            <a href="?page=divisi&halaman=<?= $currentPage+1 ?>" class="px-4 py-2 bg-gray-200 rounded"> Next → </a>
+        <?php endif; ?>
     </div>
 </div>

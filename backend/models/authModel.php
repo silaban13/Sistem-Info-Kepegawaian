@@ -12,28 +12,16 @@ class AuthModel
     }
 
     public function loginUser($username)
-{
+    {
 
+        $sql = "SELECT users.*, pegawai.id AS id_pegawai, pegawai.nama, pegawai.foto FROM users LEFT JOIN pegawai ON pegawai.id_user = users.id WHERE users.username = ?";
 
-    $sql = "SELECT
-                users.*,
-                pegawai.id AS id_pegawai,
-                pegawai.nama,
-                pegawai.foto
-            FROM users
-            LEFT JOIN pegawai
-                ON pegawai.id_user = users.id
-            WHERE users.username = ?";
-
-
-    $stmt = $this->conn->prepare($sql);
-    $stmt->bind_param("s", $username);
-    $stmt->execute();
-
-    $result = $stmt->get_result();
-
-    return $result->fetch_assoc();
-}
+        $stmt = $this->conn->prepare($sql);
+        $stmt->bind_param("s", $username);
+        $stmt->execute();
+        $result = $stmt->get_result();
+        return $result->fetch_assoc();
+    }
 
     public function cekUsername($username)
     {

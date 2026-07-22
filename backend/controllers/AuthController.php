@@ -19,7 +19,6 @@ class AuthController
 
     public function login()
     {
-
         $username = trim($_POST['username']);
         $password = trim($_POST['password']);
 
@@ -58,61 +57,41 @@ class AuthController
             header("Location: index.php?page=dashboard");
         }
 
-
         exit;
     }
 
-    
     public function register()
-{
-    $username = $_POST['username'];
-    $password = $_POST['password'];
-    $role = $_POST['role'];
+    {
+        $username = $_POST['username'];
+        $password = $_POST['password'];
+        $role = $_POST['role'];
+        $hashPassword = password_hash($password, PASSWORD_DEFAULT);
 
+        $result = $this->authModel->registerUser($username, $hashPassword, $role);
 
-    $hashPassword = password_hash(
-        $password,
-        PASSWORD_DEFAULT
-    );
+        if($result){
+            echo json_encode([
+                "status"=>true,
+                "message"=>"User berhasil dibuat"
+            ]);
+        }else{
+            echo json_encode([
+                "status"=>false,
+                "message"=>"Gagal membuat user"
+            ]);
 
-
-    $result = $this->authModel->registerUser(
-        $username,
-        $hashPassword,
-        $role
-    );
-
-    if($result){
-
-        echo json_encode([
-            "status"=>true,
-            "message"=>"User berhasil dibuat"
-        ]);
-
-    }else{
-
-        echo json_encode([
-            "status"=>false,
-            "message"=>"Gagal membuat user"
-        ]);
-
+        }
     }
-}
 
 
     public function logout()
     {
         session_start();
-
         session_unset();
-
         session_destroy();
-
-
         header("Location: index.php?page=login");
 
         exit;
     }
-
 
 }

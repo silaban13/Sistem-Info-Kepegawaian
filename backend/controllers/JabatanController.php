@@ -54,9 +54,7 @@ class JabatanController
         $gajiPokok   = $_POST['gaji_pokok'] ?? '';
 
         if (empty($namaJabatan) || $gajiPokok === '') {
-
             http_response_code(400);
-
             echo json_encode([
                 "status"  => false,
                 "message" => "Nama jabatan dan gaji pokok wajib diisi."
@@ -76,15 +74,12 @@ class JabatanController
     public function update()
     {
         parse_str(file_get_contents("php://input"), $put);
-
         $id           = $put['id'] ?? '';
         $namaJabatan  = trim($put['nama_jabatan'] ?? '');
         $gajiPokok    = $put['gaji_pokok'] ?? '';
 
         if (empty($id) || empty($namaJabatan) || $gajiPokok === '') {
-
             http_response_code(400);
-
             echo json_encode([
                 "status"  => false,
                 "message" => "ID, nama jabatan, dan gaji pokok wajib diisi."
@@ -93,11 +88,7 @@ class JabatanController
             return;
         }
 
-        $this->model->update(
-            $id,
-            $namaJabatan,
-            $gajiPokok
-        );
+        $this->model->update($id, $namaJabatan, $gajiPokok);
 
         echo json_encode([
             "status"  => true,
@@ -106,39 +97,33 @@ class JabatanController
     }
 
     public function destroy($id)
-{
+    {
 
-    $result = $this->model->delete($id);
+        $result = $this->model->delete($id);
+        if($result === "used"){
+            echo json_encode([
+                "status"=>false,
+                "message"=>"Jabatan tidak bisa dihapus karena masih digunakan pegawai"
+            ]);
 
+            return;
 
-    if($result === "used"){
+        }
+
+        if(!$result){
+            echo json_encode([
+                "status"=>false,
+                "message"=>"Gagal menghapus jabatan"
+            ]);
+
+            return;
+
+        }
 
         echo json_encode([
-            "status"=>false,
-            "message"=>"Jabatan tidak bisa dihapus karena masih digunakan pegawai"
+            "status"=>true,
+            "message"=>"Data jabatan berhasil dihapus"
         ]);
 
-        return;
-
     }
-
-
-    if(!$result){
-
-        echo json_encode([
-            "status"=>false,
-            "message"=>"Gagal menghapus jabatan"
-        ]);
-
-        return;
-
-    }
-
-
-    echo json_encode([
-        "status"=>true,
-        "message"=>"Data jabatan berhasil dihapus"
-    ]);
-
-}
 }

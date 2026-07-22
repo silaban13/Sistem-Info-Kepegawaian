@@ -38,6 +38,24 @@
                         <option value="">Pilih Jabatan</option>
                     </select>
                 </div>
+
+
+                <div class="mb-4">
+                    <label class="block mb-2 font-medium">
+                        Akun Login
+                    </label>
+
+                    <select
+                        id="id_user"
+                        name="id_user"
+                        class="w-full border rounded-lg p-2"
+                        required
+                    >
+                        <option value="">Memuat data user...</option>
+                    </select>
+                </div>
+                
+
                 <div>
                     <label class="block mb-2 font-medium text-gray-700"> Status </label>
                     <select name="status" class="w-full border rounded-lg px-4 py-3">
@@ -64,3 +82,4 @@
     </div>
 </div>
 <script src="frontend/assets/js/pegawai_create.js"></script>
+

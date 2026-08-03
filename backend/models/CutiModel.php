@@ -12,11 +12,22 @@ class CutiModel
         $this->conn = $database->conn;
     }
 
-    public function getAll()
+    public function getAll($limit, $offset)
     {
-        $sql = " SELECT cuti.*, pegawai.nama FROM cuti INNER JOIN pegawai ON cuti.id_pegawai = pegawai.id ORDER BY cuti.created_at DESC";
+        $sql = "SELECT cuti.*, pegawai.nama FROM cuti INNER JOIN pegawai ON cuti.id_pegawai = pegawai.id ORDER BY cuti.created_at DESC LIMIT ? OFFSET ?";
+        $stmt = $this->conn->prepare($sql);
+        $stmt->bind_param("ii", $limit, $offset);
+        $stmt->execute();
+
+        return $stmt->get_result();
+    }
+    
+    public function getTotalCuti()
+    {
+        $sql = "SELECT COUNT(*) AS total FROM cuti";
         $result = $this->conn->query($sql);
-        return $result;
+
+        return $result->fetch_assoc()['total'];
     }
 
     public function getById($id)
@@ -110,4 +121,18 @@ class CutiModel
 
         return $stmt->execute();
     }
+
+    public function getSummary()
+    {
+        $sql = "
+            SELECT
+                SUM(status='Pending') AS pending,
+                SUM(status='Disetujui') AS approved,
+                SUM(status='Ditolak') AS rejected
+            FROM cuti
+        ";
+
+        return $this->conn->query($sql)->fetch_assoc();
+    }
+
 }

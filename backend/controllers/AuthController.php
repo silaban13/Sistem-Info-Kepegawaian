@@ -42,14 +42,27 @@ class AuthController
             exit;
         }
 
+        if ($user['role'] == 'pegawai' && empty($user['id_pegawai'])) {
+            $_SESSION['error'] = "Akun ini belum terhubung dengan data pegawai. Hubungi administrator.";
+            header("Location: index.php?page=login");
+            exit;
+        }
+
         $_SESSION['login'] = true;
         $_SESSION['id_user'] = $user['id'];
         $_SESSION['username'] = $user['username'];
         $_SESSION['role'] = $user['role'];
-
         $_SESSION['id_pegawai'] = $user['id_pegawai'];
         $_SESSION['nama'] = $user['nama'];
         $_SESSION['foto'] = $user['foto'];
+
+        if (isset($_POST['remember'])) {
+
+            $token = bin2hex(random_bytes(32));
+            $this->authModel->saveRememberToken($user['id'], $token);
+            setcookie("remember_token", $token, time() + (60 * 60 * 24 * 30), "/", "", false, true);
+
+        }
 
         if ($user['role'] == 'admin') {
             header("Location: index.php?page=dashboard");
@@ -58,6 +71,7 @@ class AuthController
         }
 
         exit;
+
     }
 
     public function register()
@@ -83,14 +97,16 @@ class AuthController
         }
     }
 
-
     public function logout()
     {
-        session_start();
+        if (isset($_SESSION['id_user'])) {
+            $this->authModel->clearRememberToken($_SESSION['id_user']);
+        }
+
+        setcookie("remember_token", "", time() - 3600, "/");
         session_unset();
         session_destroy();
         header("Location: index.php?page=login");
-
         exit;
     }
 

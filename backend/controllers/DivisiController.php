@@ -129,4 +129,15 @@ class DivisiController
         exit;
     }
 
+    public function all()
+    {
+        $divisi = $this->model->getAll();
+
+        echo json_encode([
+            "status" => true,
+            "message" => "Semua data divisi berhasil diambil",
+            "data" => $divisi
+        ]);
+    }
+
 }

@@ -20,6 +20,23 @@ $user = $result['data'];
                 <label class="block mb-2 font-semibold text-gray-700"> Username </label>
                 <input type="text" name="username" value="<?= $user['username'] ?>" class="w-full border border-gray-300 rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-blue-500">
             </div>
+
+    <div class="mb-6">
+        <label class="block mb-2 font-semibold text-gray-700">
+            Password Baru
+        </label>
+
+        <div class="relative">
+            <input type="password" id="password" name="password" placeholder="Masukkan password baru" class="w-full border border-gray-300 rounded-lg px-4 py-3 pr-12 focus:outline-none focus:ring-2 focus:ring-blue-500">
+            <button id="toggleBtn" type="button" onclick="togglePassword()" class="absolute inset-y-0 right-3 flex items-center text-gray-500 hover:text-gray-700"> 👁 </button>
+        </div>
+        <p class="text-sm text-gray-500 mt-2">
+            Kosongkan jika password tidak ingin diubah.
+        </p>
+    </div>
+
+
+
             <div class="mb-8">
                 <label class="block mb-2 font-semibold text-gray-700"> Role </label>
                 <select name="role" class="w-full border border-gray-300 rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-blue-500">
@@ -34,3 +51,21 @@ $user = $result['data'];
         </form>
     </div>
 </div>
+
+<script>
+
+function togglePassword() {
+    const input = document.getElementById("password");
+    const btn = document.getElementById("toggleBtn");
+
+    if (input.type === "password") {
+        input.type = "text";
+        btn.textContent = "🙈";
+    } else {
+        input.type = "password";
+        btn.textContent = "👁";
+    }
+}
+
+
+</script>

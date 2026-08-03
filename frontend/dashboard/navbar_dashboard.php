@@ -19,18 +19,14 @@
             </div>
         </div>
         <div class="flex items-center gap-2 sm:gap-5">
-
             <div class="relative">
-
                 <button id="notifBtn" class="relative p-2 rounded-full hover:bg-gray-100">
                     <span class="text-xl">🔔</span>
-
-                    <span id="notifCount" class="absolute -top-1 -right-1 bg-red-500 text-white text-[10px] sm:text-xs min-w-5 h-5 px-1 rounded-full flex items-center justify-center"> 3 </span>
+                    <span id="notifCount" class="absolute -top-1 -right-1 bg-red-500 text-white text-[10px] sm:text-xs min-w-5 h-5 px-1 rounded-full flex items-center justify-center"> 0 </span>
                 </button>
-
-                <div id="notifMenu" class="hidden absolute top-full mt-3 left-1/2 -translate-x-1/2 md:left-auto md:right-0 md:translate-x-0 w-[95vw] max-w-sm bg-white rounded-xl shadow-lg border border-gray-200 z-50 overflow-hidden">
+                <div id="notifMenu" class="hidden fixed sm:absolute top-20 left-1/2 -translate-x-1/2 sm:top-full sm:mt-3 sm:left-auto sm:right-0 sm:translate-x-0 w-[95vw] max-w-sm bg-white rounded-xl shadow-lg border border-gray-200 z-50 overflow-hidden">
                     <div class="p-4 border-b">
-                        <h3 class="font-semibold text-gray-700"> Notifikasi </h3>
+                        <h3 class="font-semibold text-gray-700">Notifikasi</h3>
                     </div>
                     <div id="notifList" class="max-h-80 overflow-y-auto"></div>
                 </div>

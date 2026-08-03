@@ -23,18 +23,13 @@ async function loadDashboard() {
     totalDataTerbaru.textContent = response.data.jabatan;
 }
 
-loadDashboard();
-
 async function loadDashboardProfile() {
 
     try {
 
         const response = await getData("profile");
-
         if (!response.status) return;
-
         const user = response.data;
-
         const dashboardTitle = document.getElementById("dashboardTitle");
         const welcomeUser = document.getElementById("welcomeUser");
         const roleUser = document.getElementById("roleUser");
@@ -82,4 +77,25 @@ async function loadDashboardProfile() {
 
 }
 
-loadDashboardProfile();
+(async function () {
+
+    document.getElementById("dashboardLoading").classList.remove("hidden");
+    document.getElementById("dashboardContent").classList.add("hidden");
+
+    try {
+
+        await loadDashboard();
+        await loadDashboardProfile();
+
+    } catch (error) {
+
+        console.error(error);
+
+    } finally {
+
+        document.getElementById("dashboardLoading").classList.add("hidden");
+        document.getElementById("dashboardContent").classList.remove("hidden");
+
+    }
+
+})();

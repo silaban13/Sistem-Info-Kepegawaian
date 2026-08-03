@@ -33,6 +33,7 @@ $router->put("absensi", [AbsensiController::class, "update"]);
 $router->delete("absensi", [AbsensiController::class, "destroy"]);
 
 $router->get("divisi", [DivisiController::class, "index"]);
+$router->get("divisi/all", [DivisiController::class, "all"]);
 $router->get("divisi/show", [DivisiController::class, "show"]);
 $router->post("divisi", [DivisiController::class, "store"]);
 $router->put("divisi", [DivisiController::class, "update"]);
@@ -46,10 +47,9 @@ $router->delete("jabatan", [JabatanController::class, "destroy"]);
 
 $router->get("pegawai", [PegawaiController::class, "index"]);
 $router->get("pegawai/show", [PegawaiController::class, "show"]);
+$router->get("pegawai/all", [PegawaiController::class, "all"]);
 $router->post("pegawai", [PegawaiController::class, "store"]);
-
 $router->post("pegawai/update", [PegawaiController::class, "update"]);
-
 $router->put("pegawai", [PegawaiController::class, "update"]);
 $router->delete("pegawai", [PegawaiController::class, "destroy"]);
 

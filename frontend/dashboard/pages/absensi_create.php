@@ -12,8 +12,12 @@
             <option value="Izin"> Izin </option>
             <option value="Sakit"> Sakit </option>
         </select>
-        <button class="bg-blue-600 text-white px-5 py-3 rounded"> Simpan </button>
+        <div class="flex justify-end gap-3 pt-2">
+            <a href="?page=absensi" class="px-5 py-3 rounded-lg bg-gray-300 hover:bg-gray-400 text-gray-800 transition"> Batal </a>
+            <button type="submit" class="px-5 py-3 rounded-lg bg-blue-600 hover:bg-blue-700 text-white transition"> Simpan </button>
+        </div>
     </form>
 </div>
 
+<script src="frontend/assets/js/tom-select.complete.min.js"></script>
 <script src="/Sistem-Info-Kepegawaian/frontend/dashboard/js/absensi_create.js"></script>

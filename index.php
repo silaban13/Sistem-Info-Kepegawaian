@@ -148,7 +148,6 @@
             require __DIR__ . '/frontend/dashboard/dashboard_template.php';
             break;
 
-
         case "register":
             require_once __DIR__ . "/../controllers/AuthController.php";
             $controller = new AuthController();
@@ -211,20 +210,19 @@
             $controller->search();
             break;
 
-    case "profile":
-        session_start();
-
-        echo json_encode([
-            "status" => true,
-            "test" => "SAYA BERHASIL MASUK",
-            "data" => [
-                "nama" => $_SESSION['nama'],
-                "id_pegawai" => $_SESSION['id_pegawai'],
-                "role" => $_SESSION['role'],
-                "foto" => $_SESSION['foto'] ?? null
-            ]
-        ]);
-        break;
+        case "profile":
+            session_start();
+            echo json_encode([
+                "status" => true,
+                "test" => "SAYA BERHASIL MASUK",
+                "data" => [
+                    "nama" => $_SESSION['nama'],
+                    "id_pegawai" => $_SESSION['id_pegawai'],
+                    "role" => $_SESSION['role'],
+                    "foto" => $_SESSION['foto'] ?? null
+                ]
+            ]);
+            break;
 
         case 'logout':
             $authController->logout();

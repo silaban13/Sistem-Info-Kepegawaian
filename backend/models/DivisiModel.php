@@ -14,8 +14,10 @@ class DivisiModel
 
     public function getAll()
     {
-        $sql = "SELECT * FROM divisi ORDER BY id DESC";
-        return $this->conn->query($sql);
+        $sql = "SELECT * FROM divisi ORDER BY nama_divisi ASC";
+        $result = $this->conn->query($sql);
+
+        return $result->fetch_all(MYSQLI_ASSOC);
     }
 
     public function getById($id)

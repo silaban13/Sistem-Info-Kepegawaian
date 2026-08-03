@@ -13,8 +13,10 @@ class PegawaiModel
 
     public function getAll()
     {
-        $sql = "SELECT p.*, d.nama_divisi, j.nama_jabatan, u.username FROM pegawai p LEFT JOIN divisi d ON p.id_divisi = d.id LEFT JOIN jabatan j ON p.id_jabatan = j.id LEFT JOIN users u ON p.id_user = u.id ORDER BY p.id DESC";
-        return $this->conn->query($sql);
+        $sql = "SELECT p.*, d.nama_divisi, j.nama_jabatan, u.username FROM pegawai p LEFT JOIN divisi d ON p.id_divisi = d.id LEFT JOIN jabatan j ON p.id_jabatan = j.id LEFT JOIN users u ON p.id_user = u.id ORDER BY p.nama ASC";
+        $result = $this->conn->query($sql);
+
+        return $result->fetch_all(MYSQLI_ASSOC);
     }
 
     public function getById($id)

@@ -11,18 +11,40 @@ class CutiController
     }
 
     public function index()
-    {
-        $result = $this->model->getAll();
-        $data = [];
-        while ($row = $result->fetch_assoc()) {
-            $data[] = $row;
-        }
+{
+    $limit = 5;
+    $page = isset($_GET['page']) ? (int)$_GET['page'] : 1;
 
-        echo json_encode([
-            "status" => true,
-            "data" => $data
-        ]);
+    if ($page < 1) {
+        $page = 1;
     }
+
+    $offset = ($page - 1) * $limit;
+
+    $result = $this->model->getAll($limit, $offset);
+    $cuti = [];
+
+    while ($row = $result->fetch_assoc()) {
+        $cuti[] = $row;
+    }
+
+    $total = $this->model->getTotalCuti();
+
+    // Ambil ringkasan
+    $summary = $this->model->getSummary();
+
+    echo json_encode([
+        "status"      => true,
+        "data"        => $cuti,
+        "page"        => $page,
+        "limit"       => $limit,
+        "total"       => $total,
+        "total_page"  => ceil($total / $limit),
+
+        // Tambahkan ini
+        "summary"     => $summary
+    ]);
+}
 
     public function store()
     {
@@ -36,6 +58,22 @@ class CutiController
             $status = 'Pending';
         }
 
+        if ($alasan === '') {
+            echo json_encode([
+                "status" => false,
+                "message" => "Alasan cuti wajib diisi."
+            ]);
+            return;
+        }
+
+        if (strlen($alasan) > 300) {
+            echo json_encode([
+                "status" => false,
+                "message" => "Alasan maksimal 300 karakter."
+            ]);
+            exit;
+        }
+
         $result = $this->model->create($id_pegawai, $tanggal_mulai, $tanggal_selesai, $alasan, $status);
 
         echo json_encode([
@@ -44,6 +82,7 @@ class CutiController
                 ? "Cuti berhasil ditambahkan"
                 : "Gagal menambahkan cuti"
         ]);
+
     }
 
     public function update()

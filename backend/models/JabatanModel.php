@@ -12,11 +12,22 @@ class JabatanModel
         $this->conn = $database->conn;
     }
 
-    public function getAll()
+    public function getAll($limit, $offset)
     {
-        $sql = "SELECT jabatan.*, COUNT(pegawai.id) AS jumlah_pegawai FROM jabatan LEFT JOIN pegawai ON jabatan.id = pegawai.id_jabatan GROUP BY jabatan.id ORDER BY jabatan.id DESC";
+        $sql = "SELECT jabatan.*, COUNT(pegawai.id) AS jumlah_pegawai FROM jabatan LEFT JOIN pegawai ON pegawai.id_jabatan = jabatan.id GROUP BY jabatan.id ORDER BY jabatan.id DESC LIMIT ? OFFSET ?";
+        $stmt = $this->conn->prepare($sql);
+        $stmt->bind_param("ii", $limit, $offset);
+        $stmt->execute();
 
-        return $this->conn->query($sql);
+        return $stmt->get_result();
+    }
+
+    public function getTotalJabatan()
+    {
+        $sql = "SELECT COUNT(*) AS total FROM jabatan";
+        $result = $this->conn->query($sql);
+
+        return $result->fetch_assoc()['total'];
     }
 
     public function getById($id)

@@ -11,10 +11,22 @@ class UserModel
         $this->conn = $database->conn;
     }
 
-    public function getAll()
+    public function getAll($limit, $offset)
     {
-        $sql = "SELECT id, username, role, created_at, updated_at FROM users ORDER BY id DESC";
-        return $this->conn->query($sql);
+        $sql = "SELECT id, username, role, created_at, updated_at FROM users ORDER BY id DESC LIMIT ? OFFSET ?";
+        $stmt = $this->conn->prepare($sql);
+        $stmt->bind_param("ii", $limit, $offset);
+        $stmt->execute();
+
+        return $stmt->get_result();
+    }
+
+    public function getTotalUsers()
+    {
+        $sql = "SELECT COUNT(*) AS total FROM users";
+        $result = $this->conn->query($sql);
+
+        return $result->fetch_assoc()['total'];
     }
 
     public function getAvailableUsers()
@@ -51,12 +63,19 @@ class UserModel
         return $stmt->execute();
     }
 
-    public function update($id, $username, $role)
+    public function update($id, $username, $role, $password = null)
     {
-        $sql = "UPDATE users SET username = ?, role = ? WHERE id = ?";
-        $stmt = $this->conn->prepare($sql);
-        $stmt->bind_param("ssi", $username, $role, $id);
-        
+        if (!empty($password)) {
+            $hashPassword = password_hash($password, PASSWORD_DEFAULT);
+            $sql = "UPDATE users SET username = ?, role = ?, password = ? WHERE id = ?";
+            $stmt = $this->conn->prepare($sql);
+            $stmt->bind_param("sssi", $username, $role, $hashPassword, $id);
+        } else {
+            $sql = "UPDATE users SET username = ?, role = ? WHERE id = ?";
+            $stmt = $this->conn->prepare($sql);
+            $stmt->bind_param("ssi", $username, $role, $id);
+        }
+
         return $stmt->execute();
     }
 
@@ -81,4 +100,19 @@ class UserModel
         $stmt->bind_param("i", $id);
         return $stmt->execute();
     }
+
+    public function getTotalAdmin()
+    {
+        $sql = "SELECT COUNT(*) AS total FROM users WHERE role='admin'";
+        $result = $this->conn->query($sql);
+        return $result->fetch_assoc()['total'];
+    }
+
+    public function getTotalStaff()
+    {
+        $sql = "SELECT COUNT(*) AS total FROM users WHERE role='pegawai'";
+        $result = $this->conn->query($sql);
+        return $result->fetch_assoc()['total'];
+    }
+
 }

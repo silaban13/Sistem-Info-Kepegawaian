@@ -24,7 +24,9 @@ class DashboardController
                 "divisi" =>
                 $this->model->totalDivisi(),
                 "cuti_pending" =>
-                $this->model->totalCutiPending()
+                $this->model->totalCutiPending(),
+                "kehadiran" => 
+                $this->model->tingkatKehadiran()
             ]
         ]);
     }

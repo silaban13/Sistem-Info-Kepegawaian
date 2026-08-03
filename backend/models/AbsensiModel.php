@@ -12,10 +12,22 @@ class AbsensiModel
         $this->conn = $database->conn;
     }
 
-    public function getAll()
+    public function getAll($limit, $offset)
     {
-        $sql = "SELECT a.id, a.id_pegawai, p.nama, p.email, a.tanggal, a.jam_masuk, a.jam_keluar, a.status, a.created_at FROM absensi a JOIN pegawai p ON a.id_pegawai = p.id ORDER BY a.id DESC";
-        return $this->conn->query($sql);
+        $sql = "SELECT a.id, a.id_pegawai, p.nama, p.email, a.tanggal, a.jam_masuk, a.jam_keluar, a.status, a.created_at FROM absensi a JOIN pegawai p ON a.id_pegawai = p.id ORDER BY a.id DESC LIMIT ? OFFSET ?";
+        $stmt = $this->conn->prepare($sql);
+        $stmt->bind_param("ii", $limit, $offset);
+        $stmt->execute();
+
+        return $stmt->get_result();
+    }
+
+    public function getTotalAbsensi()
+    {
+        $sql = "SELECT COUNT(*) AS total FROM absensi";
+        $result = $this->conn->query($sql);
+
+        return $result->fetch_assoc()['total'];
     }
 
     public function getById($id)

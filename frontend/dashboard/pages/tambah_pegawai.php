@@ -38,24 +38,12 @@
                         <option value="">Pilih Jabatan</option>
                     </select>
                 </div>
-
-
                 <div class="mb-4">
-                    <label class="block mb-2 font-medium">
-                        Akun Login
-                    </label>
-
-                    <select
-                        id="id_user"
-                        name="id_user"
-                        class="w-full border rounded-lg p-2"
-                        required
-                    >
+                    <label class="block mb-2 font-medium"> Akun Login </label>
+                    <select id="id_user" name="id_user" class="w-full border rounded-lg p-2" required>
                         <option value="">Memuat data user...</option>
                     </select>
                 </div>
-                
-
                 <div>
                     <label class="block mb-2 font-medium text-gray-700"> Status </label>
                     <select name="status" class="w-full border rounded-lg px-4 py-3">
@@ -75,11 +63,12 @@
             </div>
             <div class="mt-8 flex justify-end gap-4">
                 <a href="?page=pegawai" class="px-6 py-3 rounded-lg bg-gray-300 hover:bg-gray-400"> Batal </a>
-                <button type="submit" class="px-6 py-3 rounded-lg bg-blue-600 text-white hover:bg-blue-700"> Simpan Data </button>
+                <button  id="btnSimpan" type="submit" class="px-6 py-3 rounded-lg bg-blue-600 text-white hover:bg-blue-700"> Simpan Data </button>
             </div>
         </form>
         <div id="toast" class="fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 hidden z-50 px-6 py-4 rounded-xl shadow-2xl text-white font-medium transition-all duration-300 pointer-events-none"></div>
     </div>
 </div>
+<script src="frontend/assets/js/tom-select.complete.min.js"></script>
 <script src="frontend/assets/js/pegawai_create.js"></script>
 

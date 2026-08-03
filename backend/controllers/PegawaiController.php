@@ -15,17 +15,21 @@ class PegawaiController
     {
         $page = $_GET['page'] ?? 1;
         $limit = $_GET['limit'] ?? 5;
+        $page = (int)$page;
+        $limit = (int)$limit;
         $offset = ($page - 1) * $limit;
         $pegawai = $this->model->getPagination($limit, $offset);
-
         $total = $this->model->countPegawai();
+        $totalPage = ceil($total / $limit);
+
         echo json_encode([
             "status" => true,
             "message" => "Data pegawai berhasil diambil",
             "data" => $pegawai,
+            "page" => $page,
+            "limit" => $limit,
             "total" => $total,
-            "totalPage" => ceil($total / $limit),
-            "currentPage" => (int)$page
+            "total_page" => $totalPage
         ]);
     }
 
@@ -168,8 +172,6 @@ class PegawaiController
 
             return;
         }
-
-
     }
 
     public function update()
@@ -247,6 +249,16 @@ class PegawaiController
         echo json_encode([
             "status" => true,
             "message" => "Data pegawai berhasil dihapus"
+        ]);
+    }
+
+        public function all()
+    {
+        $pegawai = $this->model->getAll();
+
+        echo json_encode([
+            "status" => true,
+            "data" => $pegawai
         ]);
     }
 

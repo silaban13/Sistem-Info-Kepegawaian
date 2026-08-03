@@ -1,28 +1,28 @@
 <section class="max-w-7xl mx-auto px-0.5 sm:px-4 lg:px-10 py-8 lg:py-12">
     <div class="mt-8 max-w-2xl mx-auto">
-    <h2 class="text-xl font-semibold text-gray-800 mb-3"> Kirim Pesan </h2>
-    <p class="text-gray-600 leading-relaxed mb-8">
-        Jika Anda memiliki pertanyaan, saran, atau membutuhkan informasi
-        lebih lanjut mengenai Sistem Informasi Kepegawaian, silakan
-        hubungi kami melalui kontak berikut.
-    </p>
+        <h2 class="text-xl font-semibold text-gray-800 dark:text-white mb-3"> Kirim Pesan </h2>
+        <p class="text-gray-600 dark:text-gray-300 leading-relaxed mb-8">
+            Jika Anda memiliki pertanyaan, saran, atau membutuhkan informasi
+            lebih lanjut mengenai Sistem Informasi Kepegawaian, silakan
+            hubungi kami melalui kontak berikut.
+        </p>
         <div class="grid md:grid-cols-2 gap-6">
             <div class="border rounded-lg p-5">
-                <h2 class="text-xl font-semibold text-gray-800 mb-2"> Alamat </h2>
-                <p class="text-gray-600"> Kantor Sistem Informasi Kepegawaian<br> Indonesia </p>
+                <h2 class="text-xl font-semibold text-gray-800 mb-2 dark:text-gray-300"> Alamat </h2>
+                <p class="text-gray-600 dark:text-gray-300"> Kantor Sistem Informasi Kepegawaian<br> Indonesia </p>
             </div>
-            <div class="border rounded-lg p-5">
-                <h2 class="text-xl font-semibold text-gray-800 mb-2"> Kontak </h2>
-                <p class="text-gray-600"> Email: info@kepegawaian.com </p>
-                <p class="text-gray-600"> Telepon: +62 812-3456-7890 </p>
+            <div class="border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-900 rounded-lg p-5 shadow-sm dark:shadow-gray-950/50">
+                <h2 class="text-xl font-semibold text-gray-800 mb-2 dark:text-gray-300"> Kontak </h2>
+                <p class="text-gray-600 dark:text-gray-300"> Email: info@kepegawaian.com </p>
+                <p class="text-gray-600 dark:text-gray-300"> Telepon: +62 812-3456-7890 </p>
             </div>
         </div>
         <div class="mt-8">
-            <h2 class="text-xl font-semibold text-gray-800 mb-3"> Kirim Pesan </h2>
+            <h2 class="text-xl font-semibold text-gray-800 mb-3 dark:text-gray-300"> Kirim Pesan </h2>
             <form  id="waForm" class="space-y-4">
-                <input type="text" id="nama" placeholder="Nama" required class="w-full border rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-blue-500">
-                <input type="email" id="email" placeholder="Email" required class="w-full border rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-blue-500" >
-                <textarea rows="4" id="pesan" placeholder="Pesan" required class="w-full border rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-blue-500"></textarea>
+                <input type="text" id="nama" placeholder="Nama" required class="w-full border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-800 text-gray-900 dark:text-white placeholder:text-gray-400 dark:placeholder:text-gray-500 rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-blue-500">
+                <input type="email" id="email" placeholder="Email" required class="w-full border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-800 text-gray-900 dark:text-white placeholder:text-gray-400 dark:placeholder:text-gray-500 rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-blue-500">
+                <textarea rows="4" id="pesan" placeholder="Pesan" required class="w-full border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-800 text-gray-900 dark:text-white placeholder:text-gray-400 dark:placeholder:text-gray-500 rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-blue-500"></textarea>
                 <button type="submit" class="bg-blue-600 text-white px-6 py-3 rounded-lg hover:bg-blue-700"> Kirim Pesan </button>
             </form>
         </div>

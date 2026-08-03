@@ -11,19 +11,32 @@ class JabatanController
         $this->model = new JabatanModel();
     }
 
-    public function index()
+    function index()
     {
-        $result = $this->model->getAll();
+        $limit = 5;
+        $page = isset($_GET['page']) ? (int)$_GET['page'] : 1;
+
+        if ($page < 1) {
+            $page = 1;
+        }
+
+        $offset = ($page - 1) * $limit;
+        $result = $this->model->getAll($limit, $offset);
         $jabatan = [];
 
         while ($row = $result->fetch_assoc()) {
             $jabatan[] = $row;
         }
 
+        $total = $this->model->getTotalJabatan();
         echo json_encode([
-            "status"  => true,
+            "status" => true,
             "message" => "Data jabatan berhasil diambil",
-            "data"    => $jabatan
+            "data" => $jabatan,
+            "page" => $page,
+            "limit" => $limit,
+            "total" => $total,
+            "total_page" => ceil($total / $limit)
         ]);
     }
 

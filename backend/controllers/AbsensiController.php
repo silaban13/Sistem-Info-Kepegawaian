@@ -12,16 +12,30 @@ class AbsensiController
 
     public function index()
     {
-        $result = $this->model->getAll();
+        $limit = 5;
+        $page = isset($_GET['page']) ? (int)$_GET['page'] : 1;
+
+        if ($page < 1) {
+            $page = 1;
+        }
+
+        $offset = ($page - 1) * $limit;
+        $result = $this->model->getAll($limit, $offset);
         $absensi = [];
+
         while ($row = $result->fetch_assoc()) {
             $absensi[] = $row;
         }
 
+        $total = $this->model->getTotalAbsensi();
         echo json_encode([
             "status" => true,
             "message" => "Data absensi berhasil diambil",
-            "data" => $absensi
+            "data" => $absensi,
+            "page" => $page,
+            "limit" => $limit,
+            "total" => $total,
+            "total_page" => ceil($total / $limit)
         ]);
     }
 

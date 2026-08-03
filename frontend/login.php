@@ -28,9 +28,9 @@
                 <h2 class="text-3xl font-bold text-gray-800"> Selamat Datang 👋 </h2>
                 <p class="text-gray-500 mt-2"> Silakan login untuk melanjutkan. </p>
                 <?php if(isset($_SESSION['error'])): ?>
-                <div class="mt-6 bg-red-50 border border-red-300 text-red-600 rounded-xl p-4">
-                    <?= $_SESSION['error']; ?>
-                </div>
+                    <div id="errorAlert" class="mt-6 bg-red-50 border border-red-300 text-red-600 rounded-xl p-4">
+                        <?= $_SESSION['error']; ?>
+                    </div>
                 <?php unset($_SESSION['error']); ?>
                 <?php endif; ?>
                 <form action="?page=proses_login" method="POST" class="mt-8 space-y-6">
@@ -44,6 +44,12 @@
                             <input id="password" type="password" name="password" required autocomplete="current-password" placeholder="Masukkan Password" maxlength="100" class="w-full rounded-xl border border-gray-300 px-4 py-3 pr-12 focus:ring-4 focus:ring-blue-100 focus:border-blue-600 outline-none">
                             <button type="button" id="togglePassword" class="absolute right-4 top-1/2 -translate-y-1/2 text-gray-500 hover:text-blue-600"> 👁️ </button>
                         </div>
+                    </div>
+                    <div class="flex items-center justify-between mt-4">
+                        <label class="flex items-center gap-2 text-sm text-gray-600">
+                            <input type="checkbox" name="remember" class="rounded border-gray-300 text-blue-600 focus:ring-blue-500"> Remember Me
+                        </label>
+                        <a href="#" class="text-sm text-blue-600 hover:text-blue-800 hover:underline"> Forgot Password?</a>
                     </div>
                     <button type="submit" class="w-full bg-blue-600 hover:bg-blue-700 text-white py-3 rounded-xl font-semibold transition"> Login </button>
                     <div class="mt-4 text-center">
@@ -68,6 +74,18 @@
             toggle.innerHTML = "👁️";
         }
 
+    });
+
+    document.addEventListener("DOMContentLoaded", function () {
+        const alertBox = document.getElementById("errorAlert");
+        if (alertBox) {
+            setTimeout(() => {
+                alertBox.classList.add("opacity-0");
+                setTimeout(() => {
+                    alertBox.remove();
+                }, 500); 
+            }, 5000); 
+        }
     });
 
 </script>

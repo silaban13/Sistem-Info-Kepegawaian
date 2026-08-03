@@ -25,7 +25,8 @@
   },
   "dependencies": {
     "@tailwindcss/cli": "^4.3.2",
-    "tailwindcss": "^4.3.2"
+    "tailwindcss": "^4.3.2",
+    "tom-select": "^2.6.2"
   },
   "allowScripts": {
     "@parcel/watcher@2.5.1": true

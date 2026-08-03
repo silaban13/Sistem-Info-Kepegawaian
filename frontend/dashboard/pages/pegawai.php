@@ -1,10 +1,9 @@
 <?php
-if ($_SESSION['role'] != 'admin') {
-    header("Location: index.php?page=dashboard");
-    exit;
-}
+    if ($_SESSION['role'] != 'admin') {
+        header("Location: index.php?page=dashboard");
+        exit;
+    }
 ?>
-
 <?php
 
     $url = "http://localhost:8080/Sistem-Info-Kepegawaian/backend/api/index.php?route=pegawai";
@@ -13,61 +12,67 @@ if ($_SESSION['role'] != 'admin') {
     $pegawai = $result["data"] ?? [];
 
 ?>
-
-<div class="space-y-6">
-    <div>
-        <h1 class="text-2xl sm:text-3xl font-bold text-gray-800"> Status Pegawai </h1>
-    </div>
-    <div class="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
-        <div>
-            <h2 class="text-xl font-semibold text-gray-800"> Daftar Pegawai </h2>
-            <p class="mt-1 text-sm text-gray-500"> Geser tabel ke samping apabila seluruh data belum terlihat. </p>
-        </div>
-        <a id="btnTambahPegawai" href="?page=tambah_pegawai" class="w-full sm:w-auto rounded-lg bg-blue-600 px-5 py-2.5 text-center text-white transition hover:bg-blue-700"> + Tambah Pegawai</a>
-    </div>
-    <div class="bg-white rounded-xl shadow border border-gray-200 overflow-hidden">
-        <div class="overflow-x-auto">
-            <table class="min-w-[700px] w-full">
-                <thead class="bg-gray-100">
-                    <tr class="border-t hover:bg-gray-50 transition">
-                        <th class="px-4 py-3 text-left">No</th>
-                        <th class="px-4 py-3 text-left">Nama Pegawai</th>
-                        <th class="px-4 py-3 text-left">Jabatan</th>
-                        <th class="px-4 py-3 text-left">Email</th>
-                        <th class="px-4 py-3 text-left">Status</th>
-                        <th class="px-4 py-3 text-left">Aksi</th>
-                    </tr>
-                </thead>
-                <tbody id="pegawaiTable">
-                    <?php if(count($pegawai) > 0): ?>
-                        <?php $no=1; ?>
-                        <?php foreach($pegawai as $row): ?>
-                        <tr class="border-t">
-                            <td class="px-4 py-4"><?= $no++ ?></td>
-                            <td class="px-4 py-4"> <?= htmlspecialchars($row["nama"]) ?> </td>
-                            <td class="px-4 py-4"> <?= htmlspecialchars($row["nama_jabatan"]) ?> </td>
-                            <td class="px-4 py-4"> <?= htmlspecialchars($row["email"]) ?> </td>
-                            <td class="px-4 py-4">
-                                <span class="bg-green-100 text-green-700 px-3 py-1 rounded-full text-sm"> <?= htmlspecialchars($row["status"]) ?> </span>
-                            </td>
-                        </tr>
-                        <?php endforeach; ?>
-                    <?php else: ?>
-                        <tr>
-                            <td colspan="5" class="text-center py-10 text-gray-500"> Belum ada data pegawai </td>
-                        </tr>
-                    <?php endif; ?>
-                </tbody>
-            </table>
-        </div>
-    </div>
-    <div class="flex justify-between items-center p-4">
-        <button id="prevBtn" class="px-4 py-2 bg-gray-200 rounded-lg hover:bg-gray-300"> Prev </button>
-        <span id="pageInfo" class="text-sm text-gray-600"> Halaman 1 </span>
-        <button id="nextBtn" class="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700"> Next </button>
+<div id="pegawaiLoading" class="flex justify-center items-center py-20">
+    <div class="flex flex-col items-center gap-3">
+        <div class="w-12 h-12 border-4 border-blue-600 border-t-transparent rounded-full animate-spin"></div>
+        <p class="text-gray-500">Memuat data pegawai...</p>
     </div>
 </div>
-
+<div id="pegawaiContent" class="hidden">
+    <div class="space-y-6">
+        <div>
+            <h1 class="text-2xl sm:text-3xl font-bold text-gray-800"> Status Pegawai </h1>
+        </div>
+        <div class="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+            <div>
+                <h2 class="text-xl font-semibold text-gray-800"> Daftar Pegawai </h2>
+                <p class="mt-1 text-sm text-gray-500"> Geser tabel ke samping apabila seluruh data belum terlihat. </p>
+            </div>
+            <a id="btnTambahPegawai" href="?page=tambah_pegawai" class="w-full sm:w-auto rounded-lg bg-blue-600 px-5 py-2.5 text-center text-white transition hover:bg-blue-700"> + Tambah Pegawai</a>
+        </div>
+        <div class="bg-white rounded-xl shadow border border-gray-200 overflow-hidden">
+            <div class="overflow-x-auto">
+                <table class="min-w-[700px] w-full">
+                    <thead class="bg-gray-100">
+                        <tr class="border-t hover:bg-gray-50 transition">
+                            <th class="px-4 py-3 text-left">No</th>
+                            <th class="px-4 py-3 text-left">Nama Pegawai</th>
+                            <th class="px-4 py-3 text-left">Jabatan</th>
+                            <th class="px-4 py-3 text-left">Email</th>
+                            <th class="px-4 py-3 text-left">Status</th>
+                            <th class="px-4 py-3 text-left">Aksi</th>
+                        </tr>
+                    </thead>
+                    <tbody id="pegawaiTable">
+                        <?php if(count($pegawai) > 0): ?>
+                            <?php $no=1; ?>
+                            <?php foreach($pegawai as $row): ?>
+                            <tr class="border-t">
+                                <td class="px-4 py-4"><?= $no++ ?></td>
+                                <td class="px-4 py-4"> <?= htmlspecialchars($row["nama"]) ?> </td>
+                                <td class="px-4 py-4"> <?= htmlspecialchars($row["nama_jabatan"]) ?> </td>
+                                <td class="px-4 py-4"> <?= htmlspecialchars($row["email"]) ?> </td>
+                                <td class="px-4 py-4">
+                                    <span class="bg-green-100 text-green-700 px-3 py-1 rounded-full text-sm"> <?= htmlspecialchars($row["status"]) ?> </span>
+                                </td>
+                            </tr>
+                            <?php endforeach; ?>
+                        <?php else: ?>
+                            <tr>
+                                <td colspan="5" class="text-center py-10 text-gray-500"> Belum ada data pegawai </td>
+                            </tr>
+                        <?php endif; ?>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <div class="flex justify-between items-center p-4">
+            <button id="prevBtn" class="px-4 py-2 bg-gray-200 rounded-lg hover:bg-gray-300"> Prev </button>
+            <span id="pageInfo" class="text-sm text-gray-600"> Halaman 1 </span>
+            <button id="nextBtn" class="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700"> Next </button>
+        </div>
+    </div>
+</div>
 <script>
     const API = "http://localhost:8080/Sistem-Info-Kepegawaian/backend/api/index.php?route=";
     async function getData(route) {
@@ -87,6 +92,8 @@ if ($_SESSION['role'] != 'admin') {
     let currentPage = 1;
     let limit = 5;
     function loadPegawai(){
+        document.getElementById("pegawaiLoading").classList.remove("hidden");
+        document.getElementById("pegawaiContent").classList.add("hidden");
         fetch( `backend/api/index.php?route=pegawai&page=${currentPage}&limit=${limit}`)
         .then(res=>res.json())
         .then(data=>{
@@ -117,7 +124,7 @@ if ($_SESSION['role'] != 'admin') {
                     `;
                 });
 
-            }else{
+            } else {
                 tbody.innerHTML=`
                     <tr>
                         <td colspan="6" class="text-center py-10"> Belum ada data </td>
@@ -125,10 +132,18 @@ if ($_SESSION['role'] != 'admin') {
                 `;
             }
 
-            document.getElementById("pageInfo").innerHTML = `Halaman ${currentPage} dari ${data.totalPage}`;
-            document.getElementById("prevBtn").disabled =
-            currentPage <=1;
-            document.getElementById("nextBtn").disabled = currentPage >= data.totalPage;
+            document.getElementById("pageInfo").innerHTML = `Halaman ${currentPage} dari ${data.total_page}`;
+            document.getElementById("prevBtn").disabled = currentPage <= 1;
+            document.getElementById("nextBtn").disabled = currentPage >= data.total_page;
+            document.getElementById("pegawaiLoading").classList.add("hidden");
+            document.getElementById("pegawaiContent").classList.remove("hidden");
+        }) .catch(error => {
+
+            console.error(error);
+            document.getElementById("pegawaiLoading").classList.add("hidden");
+            document.getElementById("pegawaiContent").classList.remove("hidden");
+            alert("Gagal mengambil data pegawai.");
+
         });
     }
 

@@ -2,7 +2,7 @@
 
 ## Kelompok 1 : Sistem Informasi Kepegawaian
 
-## sebelum menjalankan project ini jalankan perintah di bawah ini atau pasang node_modules
+### sebelum menjalankan project ini jalankan perintah di bawah ini atau pasang node_modules
 
 `npm install`
 
@@ -21,3 +21,9 @@
 ### Loading saat fetch data atau spinner loading
 
 ### Tom Select. -> npm install tom-select
+
+#### 1. Clone repository
+#### 2. Import database/database.sql
+#### 3. Atur config database
+#### 4. Jalankan XAMPP
+#### 5. Buka localhost/Sistem-Info-Kepegawaian

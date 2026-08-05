@@ -15,7 +15,6 @@ class DivisiController
         $page = $_GET['page'] ?? 1;
         $limit = $_GET['limit'] ?? 4;
         $offset = ($page - 1) * $limit;
-        
         $divisi = $this->model->getPagination($limit, $offset);
         $total = $this->model->countDivisi();
 

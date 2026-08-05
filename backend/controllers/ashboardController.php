@@ -4,7 +4,6 @@ require_once __DIR__ . '/../models/DashboardModel.php';
 
 class DashboardController
 {
-
     private $model;
     public function __construct()
     {
@@ -24,7 +23,6 @@ class DashboardController
                 $this->model->totalDivisi(),
                 "cuti_pending" =>
                 $this->model->totalCutiPending()
-
             ]
 
         ]);

@@ -80,7 +80,6 @@ class AuthController
         $password = $_POST['password'];
         $role = $_POST['role'];
         $hashPassword = password_hash($password, PASSWORD_DEFAULT);
-
         $result = $this->authModel->registerUser($username, $hashPassword, $role);
 
         if($result){
@@ -109,5 +108,4 @@ class AuthController
         header("Location: index.php?page=login");
         exit;
     }
-
 }

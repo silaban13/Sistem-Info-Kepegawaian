@@ -156,7 +156,6 @@ class PegawaiController
             return;
         }
 
-
         if ($result) {
 
             $notif = new NotifikasiModel();
@@ -252,7 +251,7 @@ class PegawaiController
         ]);
     }
 
-        public function all()
+    public function all()
     {
         $pegawai = $this->model->getAll();
 

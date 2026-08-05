@@ -22,6 +22,19 @@ class JabatanModel
         return $stmt->get_result();
     }
 
+    public function getAllData()
+    {
+        $sql = "SELECT * FROM jabatan ORDER BY nama_jabatan ASC";
+        $result = $this->conn->query($sql);
+        $data = [];
+
+        while ($row = $result->fetch_assoc()) {
+            $data[] = $row;
+        }
+
+        return $data;
+    }
+
     public function getTotalJabatan()
     {
         $sql = "SELECT COUNT(*) AS total FROM jabatan";

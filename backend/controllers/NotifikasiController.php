@@ -34,7 +34,6 @@ class NotifikasiController
     public function destroy($id)
     {
         if(empty($id)){
-
             http_response_code(400);
 
             echo json_encode([

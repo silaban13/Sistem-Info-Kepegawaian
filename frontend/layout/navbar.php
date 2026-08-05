@@ -50,7 +50,7 @@
     <div class="flex items-center justify-between p-6 border-b border-gray-200 dark:border-gray-700">
         <div class="flex items-center gap-3">
             <div class="flex items-center justify-center w-16 h-17 bg-blue-100 rounded-xl">
-                 <img src="/Sistem-Info-Kepegawaian/frontend/assets/images/bank.png" alt="Logo" class="w-10 h-10 rounded-lg object-cover">
+                <img src="/Sistem-Info-Kepegawaian/frontend/assets/images/bank.png" alt="Logo" class="w-10 h-10 rounded-lg object-cover">
             </div>
             <div>
                 <h2 class="font-bold text-gray-800 dark:text-white"> Menu </h2>
@@ -59,10 +59,24 @@
         </div>
         <button id="closeMenu" class="w-9 h-9 rounded-full hover:bg-gray-100 dark:hover:bg-gray-800 text-2xl text-gray-700 dark:text-white"> &times; </button>
     </div>
+    <div class="px-5 py-4 border-b border-gray-200 dark:border-gray-700">
+        <p class="text-sm font-semibold text-gray-500 mb-3"> Tema </p>
+        <div class="flex items-center bg-gray-100 rounded-full p-1 shadow-sm w-fit">
+            <button id="theme-system-mobile" class="w-8 h-8 flex items-center justify-center rounded-full hover:bg-white transition">
+                <img src="/Sistem-Info-Kepegawaian/frontend/assets/images/monitor.png" class="w-5 h-5">
+            </button>
+            <button id="theme-light-mobile" class="w-8 h-8 flex items-center justify-center rounded-full bg-white shadow transition">
+                <img src="/Sistem-Info-Kepegawaian/frontend/assets/images/darker.png" class="w-5 h-5">
+            </button>
+            <button id="theme-dark-mobile" class="w-8 h-8 flex items-center justify-center rounded-full hover:bg-white transition">
+                <img src="/Sistem-Info-Kepegawaian/frontend/assets/images/night-mode.png" class="w-5 h-5">
+            </button>
+        </div>
+    </div>
     <div class="p-5">
         <div class="relative">
             <img src="/Sistem-Info-Kepegawaian/frontend/assets/images/search-symbol.png" alt="Search" class="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 opacity-60 pointer-events-none">
-            <input id="searchInputMobile" type="text" placeholder="Cari Pegawai..." class="w-full pl-10 pr-4 py-2 rounded-lg border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-800text-gray-900 dark:text-whiteplaceholder:text-gray-500 dark:placeholder:text-gray-400 focus:ring-2 focus:ring-blue-500 focus:outline-none">
+            <input id="searchInputMobile" type="text" placeholder="Cari Pegawai..." class="w-full pl-10 pr-4 py-2 rounded-lg border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-800 text-gray-900 dark:text-white placeholder:text-gray-500 dark:placeholder:text-gray-400 focus:ring-2 focus:ring-blue-500 focus:outline-none">
         </div>
         <div id="searchResultMobile" class="mt-2 bg-white dark:bg-gray-800 rounded-lg shadow-lg hidden"> </div>
     </div>
@@ -76,20 +90,6 @@
         <a href="/Sistem-Info-Kepegawaian/index.php?page=contact" class="flex items-center gap-3 px-4 py-3 rounded-xl text-gray-700 dark:text-gray-200 hover:bg-blue-50 dark:hover:bg-gray-800 hover:text-blue-600 transition">
             <span>Contact</span>
         </a>
-    </div>
-    <div class="lg:hidden border-t mt-6 pt-6 px-4">
-        <p class="text-sm font-semibold text-gray-500 mb-3"> Tema </p>
-        <div class="flex items-center bg-gray-100 rounded-full p-1 shadow-sm w-fit">
-            <button id="theme-system-mobile" class="w-8 h-8 flex items-center justify-center rounded-full hover:bg-white transition">
-                <img src="/Sistem-Info-Kepegawaian/frontend/assets/images/monitor.png" class="w-5 h-5">
-            </button>
-            <button id="theme-light-mobile" class="w-8 h-8 flex items-center justify-center rounded-full bg-white shadow transition">
-                <img src="/Sistem-Info-Kepegawaian/frontend/assets/images/darker.png" class="w-5 h-5">
-            </button>
-            <button id="theme-dark-mobile" class="w-8 h-8 flex items-center justify-center rounded-full hover:bg-white transition">
-                <img src="/Sistem-Info-Kepegawaian/frontend/assets/images/night-mode.png" class="w-5 h-5">
-            </button>
-        </div>
     </div>
 </div>
 <script src="/Sistem-Info-Kepegawaian/frontend/assets/js/search.js"></script>

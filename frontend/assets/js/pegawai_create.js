@@ -9,15 +9,9 @@ function loadDivisi() {
     fetch("http://localhost:8080/Sistem-Info-Kepegawaian/backend/api/index.php?route=divisi/all")
     .then(response => response.json())
     .then(result => {
-
         let select = document.getElementById("id_divisi");
-
-        select.innerHTML = `
-            <option value="">Pilih Divisi</option>
-        `;
-
+        select.innerHTML = ` <option value="">Pilih Divisi</option> `;
         if(result.status){
-
             result.data.forEach(item => {
                 select.innerHTML += `
                     <option value="${item.id}">
@@ -34,7 +28,6 @@ function loadDivisi() {
                 },
                 placeholder: "Cari Divisi..."
             });
-
         }
 
     })
@@ -44,18 +37,12 @@ function loadDivisi() {
 }
 
 function loadJabatan() {
-    fetch("http://localhost:8080/Sistem-Info-Kepegawaian/backend/api/index.php?route=jabatan")
+    fetch("http://localhost:8080/Sistem-Info-Kepegawaian/backend/api/index.php?route=jabatan/all")
     .then(response => response.json())
     .then(result => {
-
         let select = document.getElementById("id_jabatan");
-
-        select.innerHTML = `
-            <option value="">Pilih Jabatan</option>
-        `;
-
+        select.innerHTML = ` <option value="">Pilih Jabatan</option> `;
         if(result.status){
-
             result.data.forEach(item => {
                 select.innerHTML += `
                     <option value="${item.id}">
@@ -115,6 +102,7 @@ document.getElementById("formPegawai").addEventListener("submit", function(e){
         </span>
     `;
 
+
     fetch("http://localhost:8080/Sistem-Info-Kepegawaian/backend/api/index.php?route=pegawai", {
         method: "POST",
         body: formData
@@ -122,7 +110,6 @@ document.getElementById("formPegawai").addEventListener("submit", function(e){
     })
 
     .then(async response => {
-
         if (!response.ok) {
             throw new Error("Server Error");
         }
@@ -167,19 +154,13 @@ function showAlert(message, type = "success") {
 }
 
 async function loadUsers() {
-
     const select = document.getElementById("id_user");
-
-    select.innerHTML = `
-        <option value="">Memuat data user...</option>
-    `;
-
+    select.innerHTML = ` <option value="">Memuat data user...</option> `;
     const response = await fetch(
         "http://localhost:8080/Sistem-Info-Kepegawaian/backend/api/index.php?route=users/available"
     );
 
     const result = await response.json();
-
     if(result.status){
 
         select.innerHTML = `
@@ -205,9 +186,7 @@ async function loadUsers() {
 
     } else {
 
-        select.innerHTML = `
-            <option value="">Data user tidak tersedia</option>
-        `;
+        select.innerHTML = ` <option value="">Data user tidak tersedia</option> `;
 
     }
 

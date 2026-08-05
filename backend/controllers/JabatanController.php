@@ -139,4 +139,15 @@ class JabatanController
         ]);
 
     }
+
+    public function all()
+    {
+        $data = $this->model->getAllData();
+
+        echo json_encode([
+            "status" => true,
+            "data" => $data
+        ]);
+    }
+
 }

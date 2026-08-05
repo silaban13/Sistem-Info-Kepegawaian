@@ -41,6 +41,7 @@ $router->delete("divisi", [DivisiController::class, "destroy"]);
 
 $router->get("jabatan", [JabatanController::class, "index"]);
 $router->get("jabatan/show", [JabatanController::class, "show"]);
+$router->get("jabatan/all", [JabatanController::class, "all"]);
 $router->post("jabatan", [JabatanController::class, "store"]);
 $router->put("jabatan", [JabatanController::class, "update"]);
 $router->delete("jabatan", [JabatanController::class, "destroy"]);

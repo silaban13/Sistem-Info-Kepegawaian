@@ -19,6 +19,9 @@
             </div>
         </div>
         <script src="/Sistem-Info-Kepegawaian/frontend/assets/js/navbar.js"></script>
+        <?php if ($title === "Tambah Pegawai"): ?>
+            <script src="/Sistem-Info-Kepegawaian/frontend/assets/js/pegawai_create.js"></script>
+        <?php endif; ?>
         <?php if ($title === "Dashboard"): ?>
             <script src="/Sistem-Info-Kepegawaian/frontend/assets/js/dashboard.js"></script>
         <?php endif; ?>

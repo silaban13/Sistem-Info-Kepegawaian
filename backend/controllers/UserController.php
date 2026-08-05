@@ -139,7 +139,6 @@ class UserController
         ]);
     }
 
-
     public function prosesEdit()
     {
         $id       = $_POST['id'];
@@ -175,7 +174,6 @@ class UserController
         header("Location: index.php?page=user");
         exit;
     }
-
 
     public function updatePassword()
     {

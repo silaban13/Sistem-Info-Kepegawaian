@@ -14,8 +14,8 @@
                     <label class="block mb-2 font-medium text-gray-700"> Jenis Kelamin </label>
                     <select name="jenis_kelamin" class="w-full border rounded-lg px-4 py-3">
                         <option value="">Pilih</option>
-                        <option value="Laki-laki">Laki-laki</option>
-                        <option value="Perempuan">Perempuan</option>
+                        <option value="L">Laki-laki</option>
+                        <option value="P">Perempuan</option>
                     </select>
                 </div>
                 <div>
@@ -70,5 +70,4 @@
     </div>
 </div>
 <script src="frontend/assets/js/tom-select.complete.min.js"></script>
-<script src="frontend/assets/js/pegawai_create.js"></script>
 
